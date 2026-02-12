@@ -1094,19 +1094,14 @@
       <!-- LEFT PANEL -->
       <div class="left-panel">
 
-        <!-- Generation Modes Master Toggle -->
-        <div class="section" style="border: 2px solid var(--accent); background: rgba(108, 92, 231, 0.05);">
+        <!-- Generation Format (Format Generatsii) -->
+        <div class="section" id="generationFormatSection"
+          style="border: 2px solid var(--accent); background: rgba(108, 92, 231, 0.05);">
           <div class="section-header">
-            <h2><span class="icon icon-orange">✨</span> Режим генерации <span class="help-tip">?<span
-                  class="tip-text"><b>Generate 4</b> — создаёт 4 отдельных изображения с разными кинематографическими
-                  ракурсами: Low Angle, Cowboy Shot, Dutch Angle, Three-Quarter. Блокирует объектив, угол и план (они
-                  заданы в вариациях). Если заполнено «Описание сцены», слово subject заменяется на ваш
-                  текст.<br><br><b>3×3 Contact Sheet</b> — кинематографический контакт-лист из 9 кадров (от ELS до ECU +
-                  вид сверху/снизу) в единой сетке. Блокирует объектив, диафрагму, угол, план.<br><br><b>🔒 Макс.
-                    консистентность</b> — добавляет протокол Identity Lock: все черты лица, волос, кожи, телосложения и
-                  одежды фиксируются и не меняются между кадрами. Идеально для серий изображений одного
-                  персонажа.<br><br>Все три режима можно комбинировать кроме Generate 4 + 3×3
-                  (взаимоисключающие).</span></span></h2>
+            <h2><span class="icon icon-orange">📐</span> Формат генерации <span class="help-tip">?<span
+                  class="tip-text"><b>Generate 4</b> — 4 вариации (Low Angle, Cowboy Shot, Dutch Angle,
+                  3/4).<br><br><b>3×3 Contact Sheet</b> — сетка из 9 кадров.<br><br>Взаимоисключающие
+                  режимы.</span></span></h2>
           </div>
           <div class="toggle-row">
             <label class="toggle-label" id="generateFourModeLabel"
@@ -1121,11 +1116,47 @@
               <span>📐 3×3 Contact Sheet</span>
               <input type="checkbox" id="grid3x3Mode">
             </label>
+          </div>
+        </div>
+
+        <!-- Generation Mode (Max Consistency) -->
+        <div class="section" id="generationModeSection"
+          style="border: 2px solid var(--orange); background: rgba(255, 159, 67, 0.05);">
+          <div class="section-header">
+            <h2><span class="icon icon-orange">🔒</span> Режим генерации <span class="help-tip">?<span
+                  class="tip-text"><b>Макс. консистентность</b> — фиксирует выбранные параметры (Лицо, Одежда, Свет...)
+                  для 100% повторяемости при смене других настроек или Seed.</span></span></h2>
+          </div>
+          <div class="toggle-row">
             <label class="toggle-label" id="maxConsistencyLabel"
               style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--orange);">
-              <span>🔒 Макс. консистентность</span>
+              <span>🔒 Max Consistency</span>
               <input type="checkbox" id="maxConsistency">
             </label>
+          </div>
+
+          <!-- Sub-options for Consistency -->
+          <div id="consistencyOptions"
+            style="display:none; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 6px; border-left: 3px solid var(--orange);">
+            <div
+              style="font-size:0.85em; font-weight:bold; margin-bottom:8px; color:var(--text-muted); text-transform:uppercase;">
+              Зафиксировать (Lock):</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepFace" data-consistency="Face"> Лицо</label>
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepClothes" data-consistency="Clothes"> Одежда</label>
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepLight" data-consistency="Light"> Свет</label>
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepLocation" data-consistency="Location"> Локация</label>
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepStyle" data-consistency="Style"> Стиль</label>
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepAngle" data-consistency="Angle"> Ракурс</label>
+              <label class="toggle-label" style="justify-content:flex-start; gap:8px;"><input type="checkbox"
+                  id="keepPlan" data-consistency="Plan"> План</label>
+            </div>
           </div>
         </div>
 
@@ -3289,7 +3320,15 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.directorStyle) out += "DIRECTOR: " + (_cgs ? (CHATGPT_STYLE_MAP[state.directorStyle] || state.directorStyle) : state.directorStyle) + "\n";
           const modes = [];
           if (state.generateFourMode) modes.push("Generate 4 Variations");
-          if (state.maxConsistency) modes.push("Max Consistency Lock");
+          if (state.maxConsistency) {
+            const locks = [];
+            ["Face", "Clothes", "Light", "Location", "Style", "Angle", "Plan"].forEach(k => {
+              const el = $("keep" + k);
+              if (el && el.checked) locks.push(k);
+            });
+            if (locks.length) modes.push("Max Consistency Lock (" + locks.join(", ") + ")");
+            else modes.push("Max Consistency Lock");
+          }
           if (state.beforeAfter) modes.push("before/after");
           if (state.seamlessPattern) modes.push("seamless pattern");
           if (modes.length) out += "MODES: " + modes.join(", ") + "\n";
@@ -4285,6 +4324,11 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           $("generateFourMode").checked = false;
           $("grid3x3Mode").checked = false;
           $("maxConsistency").checked = false;
+          $("consistencyOptions").style.display = "none";
+          ["keepFace", "keepClothes", "keepLight", "keepLocation", "keepStyle", "keepAngle", "keepPlan"].forEach(id => {
+            const el = $(id);
+            if (el) el.checked = false;
+          });
           $("skinRenderBoost").checked = false;
           $("hairRenderBoost").checked = false;
           $("lensSection").classList.remove("disabled-section");
@@ -4336,6 +4380,25 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           updateAll();
           notify("Всё сброшено");
         }
+
+        // --- Consistency Logic ---
+        const consistencyIds = ["keepFace", "keepClothes", "keepLight", "keepLocation", "keepStyle", "keepAngle", "keepPlan"];
+
+        $("maxConsistency").addEventListener("change", (e) => {
+          const isChecked = e.target.checked;
+          state.maxConsistency = isChecked;
+          $("consistencyOptions").style.display = isChecked ? "block" : "none";
+          consistencyIds.forEach(id => {
+            const el = $(id);
+            if (el) el.checked = isChecked;
+          });
+          updateAll();
+        });
+
+        consistencyIds.forEach(id => {
+          const el = $(id);
+          if (el) el.addEventListener("change", updateAll);
+        });
       </script>
       <div class="notification" id="notification">Готово!</div>
 
