@@ -3161,6 +3161,10 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
         function buildFlatPrompt() {
           const parts = [];
 
+          // Aspect ratio & resolution (informational, not all engines use them in prompt)
+          if (state.aspectRatio) parts.push(state.aspectRatio + " aspect ratio");
+          if (state.resolution) parts.push(state.resolution);
+
           // Skip quality keywords for MJ (uses --q parameter instead)
           if (state.quality && state.aiModel !== "midjourney") parts.push(state.quality);
           if (state.purpose) parts.push(state.purpose);
@@ -3285,6 +3289,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.directorStyle) out += "DIRECTOR: " + (_cgs ? (CHATGPT_STYLE_MAP[state.directorStyle] || state.directorStyle) : state.directorStyle) + "\n";
           const modes = [];
           if (state.generateFourMode) modes.push("Generate 4 Variations");
+          if (state.maxConsistency) modes.push("Max Consistency Lock");
           if (state.beforeAfter) modes.push("before/after");
           if (state.seamlessPattern) modes.push("seamless pattern");
           if (modes.length) out += "MODES: " + modes.join(", ") + "\n";
@@ -3346,6 +3351,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.lightType.primary) desc.push(state.lightType.primary);
           if (state.lightType.accent) desc.push(state.lightType.accent);
           if (state.timeOfDay.primary) desc.push(state.timeOfDay.primary);
+          if (state.timeOfDay.accent) desc.push(state.timeOfDay.accent);
 
           // Light FX (MJ handles these well)
           state.lightFX.forEach(fx => desc.push(fx));
@@ -3384,7 +3390,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.aspectRatio) params.push(`--ar ${state.aspectRatio}`);
 
           // Quality
-          if (state.quality && state.quality.includes("8k")) params.push("--q 1");
+          if (state.quality) params.push("--q 1");
 
           // Stylize
           params.push(`--s ${state.mjStylize}`);
@@ -3421,7 +3427,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
             model: state.aiModel || null,
             subject: state.mainSubject || "",
             prompt_flat: buildFlatPrompt(),
-            prompt_midjourney: state.aiModel === "midjourney" ? buildMidjourneyPrompt() : undefined,
+            prompt_midjourney: (state.aiModel === "midjourney" || state.promptFormat === "midjourney") ? buildMidjourneyPrompt() : undefined,
             technical: {
               aspect_ratio: state.aspectRatio || null,
               resolution: state.resolution || null
@@ -3515,12 +3521,16 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           // Engine params tags
           if (state.aiModel === "midjourney") {
             if (state.mjStyle === "raw") addTag("engine", "--style raw", "", () => { state.mjStyle = ""; syncGroup("mjStyle"); updateAll(); });
-            if (state.mjChaos > 0) addTag("engine", "--chaos " + state.mjChaos, "");
-            if (state.mjWeird > 0) addTag("engine", "--weird " + state.mjWeird, "");
+            if (state.mjChaos > 0) addTag("engine", "--chaos " + state.mjChaos, "", () => {
+              state.mjChaos = 0; $("mjChaosSlider").value = 0; $("mjChaosVal").textContent = "0"; updateAll();
+            });
+            if (state.mjWeird > 0) addTag("engine", "--weird " + state.mjWeird, "", () => {
+              state.mjWeird = 0; $("mjWeirdSlider").value = 0; $("mjWeirdVal").textContent = "0"; updateAll();
+            });
           }
           if (state.aiModel === "dall-e-3") {
-            addTag("engine", state.dalleStyle, "");
-            addTag("engine", state.dalleQuality, "");
+            addTag("engine", state.dalleStyle, "", () => { state.dalleStyle = "vivid"; syncGroup("dalleStyle"); updateAll(); });
+            addTag("engine", state.dalleQuality, "", () => { state.dalleQuality = "hd"; syncGroup("dalleQuality"); updateAll(); });
           }
           if (state.skinRenderBoost) addTag("render", "Skin Boost", "", () => { $("skinRenderBoost").checked = false; state.skinRenderBoost = false; updateAll(); });
           if (state.hairRenderBoost) addTag("render", "Hair Boost", "", () => { $("hairRenderBoost").checked = false; state.hairRenderBoost = false; updateAll(); });
@@ -3559,10 +3569,9 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.maxConsistency) c++;
           if (state.skinRenderBoost) c++;
           if (state.hairRenderBoost) c++;
-          if (state.mjStyle) c++;
-          if (state.dalleStyle) c++;
-          if (state.dalleQuality) c++;
-          if (state.fluxModel) c++;
+          if (state.aiModel === "midjourney" && state.mjStyle) c++;
+          if (state.aiModel === "dall-e-3") { if (state.dalleStyle) c++; if (state.dalleQuality) c++; }
+          if (state.aiModel === "flux" && state.fluxModel) c++;
           if (state.beforeAfter) c++;
           if (state.seamlessPattern) c++;
           if (state.seed) c++;
@@ -3655,11 +3664,12 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           else if (state.promptFormat === "structured") promptText = buildStructuredPrompt();
           else promptText = buildFlatPrompt();
 
-          // === RENDER BOOST CONFIGS — append after main prompt ===
-          if (state.skinRenderBoost) {
+          // === RENDER BOOST CONFIGS — append after main prompt (only for engines that understand JSON) ===
+          const skipRenderBoost = ["stable-diffusion", "flux", "midjourney"].includes(state.aiModel);
+          if (state.skinRenderBoost && !skipRenderBoost) {
             promptText += "\n\n" + SKIN_RENDER_CONFIG;
           }
-          if (state.hairRenderBoost) {
+          if (state.hairRenderBoost && !skipRenderBoost) {
             promptText += "\n\n" + HAIR_RENDER_CONFIG;
           }
 
@@ -3678,6 +3688,13 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           // Generate 4 — prepend the JSON block, replacing "subject" with scene description if filled
           if (state.generateFourMode) {
             let g4block = GENERATE_FOUR_PREFIX;
+
+            // Fill base_prompt with the user's prompt
+            const userPrompt = buildFlatPrompt();
+            if (userPrompt && !userPrompt.includes("Select parameters")) {
+              g4block = g4block.replace('"base_prompt": ""', '"base_prompt": "' + userPrompt.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"');
+              g4block = g4block.replace('"base_prompt_note": "No primary prompt available."', '"base_prompt_note": "User-defined prompt included above."');
+            }
 
             // Replace "subject" with scene description
             if (state.mainSubject && state.mainSubject.trim()) {
