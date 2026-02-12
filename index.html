@@ -3281,31 +3281,43 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.mainSubject) parts.push(state.mainSubject.trim());
           out += parts.filter(Boolean).join(", ") + "\n\n";
 
-          // Camera
+          // Checks
+          const isMax = state.maxConsistency;
+          const kFace = !isMax || ($("keepFace") && $("keepFace").checked);
+          const kClothes = !isMax || ($("keepClothes") && $("keepClothes").checked);
+          const kLight = !isMax || ($("keepLight") && $("keepLight").checked);
+          // Location currently not separated in params (part of subject), but keeping flag for future
+          const kStyle = !isMax || ($("keepStyle") && $("keepStyle").checked);
+          const kAngle = !isMax || ($("keepAngle") && $("keepAngle").checked);
+          const kPlan = !isMax || ($("keepPlan") && $("keepPlan").checked);
+
+          // Camera (Split logic: Angle -> Angle, Composition/Lens/Body -> Plan)
           if (state.cameraBody || state.lens || state.aperture || state.angle || state.composition) {
-            out += "CAMERA: ";
             const cam = [];
-            if (state.cameraBody) cam.push(state.cameraBody);
-            if (state.lens) cam.push(state.lens);
-            if (state.aperture) cam.push(state.aperture);
-            if (state.angle) cam.push(state.angle);
-            if (state.composition) cam.push(state.composition);
-            out += cam.join(", ") + "\n";
+            if (kPlan && state.cameraBody) cam.push(state.cameraBody);
+            if (kPlan && state.lens) cam.push(state.lens);
+            if (kPlan && state.aperture) cam.push(state.aperture);
+            if (kAngle && state.angle) cam.push(state.angle);
+            if (kPlan && state.composition) cam.push(state.composition);
+
+            if (cam.length) out += "CAMERA: " + cam.join(", ") + "\n";
           }
 
           // Lighting
-          const lightParts = [];
-          if (state.lightType.primary) lightParts.push(state.lightType.primary);
-          if (state.lightType.accent) lightParts.push(state.lightType.accent);
-          if (state.timeOfDay.primary) lightParts.push(state.timeOfDay.primary);
-          if (state.timeOfDay.accent) lightParts.push(state.timeOfDay.accent);
-          if (lightParts.length) out += "LIGHTING: " + lightParts.join(", ") + "\n";
+          if (kLight) {
+            const lightParts = [];
+            if (state.lightType.primary) lightParts.push(state.lightType.primary);
+            if (state.lightType.accent) lightParts.push(state.lightType.accent);
+            if (state.timeOfDay.primary) lightParts.push(state.timeOfDay.primary);
+            if (state.timeOfDay.accent) lightParts.push(state.timeOfDay.accent);
+            if (lightParts.length) out += "LIGHTING: " + lightParts.join(", ") + "\n";
+            if (state.lightFX.length) out += "EFFECTS: " + state.lightFX.join(", ") + "\n";
+          }
 
-          if (state.lightFX.length) out += "EFFECTS: " + state.lightFX.join(", ") + "\n";
-          if (state.colorPalette) out += "PALETTE: " + state.colorPalette + "\n";
-          if (state.skinDetail.length) out += "SKIN: " + state.skinDetail.join(", ") + "\n";
-          if (state.hairDetail.length) out += "HAIR: " + state.hairDetail.join(", ") + "\n";
-          if (state.material.length) out += "MATERIALS: " + state.material.join(", ") + "\n";
+          if (kStyle && state.colorPalette) out += "PALETTE: " + state.colorPalette + "\n";
+          if (kFace && state.skinDetail.length) out += "SKIN: " + state.skinDetail.join(", ") + "\n";
+          if (kFace && state.hairDetail.length) out += "HAIR: " + state.hairDetail.join(", ") + "\n";
+          if (kClothes && state.material.length) out += "MATERIALS: " + state.material.join(", ") + "\n";
 
           if (state.textContent) {
             out += `TEXT: "${state.textContent}"`;
@@ -3315,9 +3327,11 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
 
           // Modes
           var _cgs = state.aiModel === "chatgpt-image";
-          if (state.photoStyle) out += "STYLE: " + (_cgs ? (CHATGPT_STYLE_MAP[state.photoStyle] || state.photoStyle) : state.photoStyle) + "\n";
-          if (state.cinemaStyle) out += "CINEMATOGRAPHY: " + (_cgs ? (CHATGPT_STYLE_MAP[state.cinemaStyle] || state.cinemaStyle) : state.cinemaStyle) + "\n";
-          if (state.directorStyle) out += "DIRECTOR: " + (_cgs ? (CHATGPT_STYLE_MAP[state.directorStyle] || state.directorStyle) : state.directorStyle) + "\n";
+          if (kStyle) {
+            if (state.photoStyle) out += "STYLE: " + (_cgs ? (CHATGPT_STYLE_MAP[state.photoStyle] || state.photoStyle) : state.photoStyle) + "\n";
+            if (state.cinemaStyle) out += "CINEMATOGRAPHY: " + (_cgs ? (CHATGPT_STYLE_MAP[state.cinemaStyle] || state.cinemaStyle) : state.cinemaStyle) + "\n";
+            if (state.directorStyle) out += "DIRECTOR: " + (_cgs ? (CHATGPT_STYLE_MAP[state.directorStyle] || state.directorStyle) : state.directorStyle) + "\n";
+          }
           const modes = [];
           if (state.generateFourMode) modes.push("Generate 4 Variations");
           if (state.maxConsistency) {
