@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <!-- saved from url=(0045)https://migrabe.github.io/vpe-prompt-builder/ -->
-<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<html lang="ru">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -271,6 +274,28 @@
       opacity: .4;
       cursor: not-allowed;
       transform: none !important
+    }
+
+    /* Section-level disable when Quick Style preset is active */
+    .disabled-section {
+      position: relative;
+      opacity: .35;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .disabled-section::after {
+      content: '🔒 Снимите пресет для ручной настройки';
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: .72em;
+      color: var(--orange);
+      background: rgba(15, 15, 20, .85);
+      padding: 3px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 5;
     }
 
     .slot-tag {
@@ -1097,10 +1122,66 @@
       <!-- LEFT PANEL -->
       <div class="left-panel">
 
+        <!-- Quick Style Presets (moved to top for priority access) -->
+        <div class="section" id="quickStyleSection">
+          <div class="section-header">
+            <h2><span class="icon icon-purple">🎨</span> Быстрые пресеты <span class="help-tip">?<span
+                  class="tip-text">Стилевые пресеты добавляют полный блок визуального стиля в промпт. Выберите один — он
+                  задаст освещение, цвет, текстуру и атмосферу. При выборе пресета все остальные меню (кроме Соотношения
+                  сторон) отключаются. Несовместим с авторскими стилями (Фото/Кино/Режиссёр).</span></span></h2>
+            <span class="mode-badge">single</span>
+          </div>
+          <div class="option-group">
+            <button class="option-btn" data-group="quickStyle" data-value="true-detective"
+              title="HBO Noir aesthetic, harsh sun, swampy greens">🕵️ True Detective</button>
+            <button class="option-btn" data-group="quickStyle" data-value="game-of-thrones"
+              title="Epic fantasy, cold lighting, muted medieval tones">⚔️ Game of Thrones</button>
+            <button class="option-btn" data-group="quickStyle" data-value="the-last-of-us"
+              title="Post-apocalyptic, overgrown nature, emotional light">🌿 The Last of Us</button>
+            <button class="option-btn" data-group="quickStyle" data-value="stranger-things"
+              title="80s nostalgia, neon fog, warm suburban interiors">🚲 Stranger Things</button>
+            <button class="option-btn" data-group="quickStyle" data-value="the-crown"
+              title="Royal elegance, rich jewel tones, soft natural light">👑 The Crown</button>
+            <button class="option-btn" data-group="quickStyle" data-value="wednesday"
+              title="Gothic dark academia, Tim Burton style, cool tones">🕷️ Wednesday</button>
+            <button class="option-btn" data-group="quickStyle" data-value="blade-runner-2049"
+              title="Neo-noir cyberpunk, volumetric fog, orange/teal">🤖 Blade Runner 2049</button>
+            <button class="option-btn" data-group="quickStyle" data-value="grand-budapest-hotel"
+              title="Wes Anderson symmetry, pastel colors, whimsical">🏨 Grand Budapest</button>
+            <button class="option-btn" data-group="quickStyle" data-value="in-the-mood-for-love"
+              title="Wong Kar-wai romance, lush reds, moody shadows">🏮 In the Mood for Love</button>
+            <button class="option-btn" data-group="quickStyle" data-value="mad-max-fury-road"
+              title="High contrast desert action, saturated teal & orange">🏎️ Mad Max Fury</button>
+            <button class="option-btn" data-group="quickStyle" data-value="the-revenant"
+              title="Natural light wilderness, cold winter, immersive">❄️ The Revenant</button>
+            <button class="option-btn" data-group="quickStyle" data-value="hero"
+              title="Wuxia poetry, bold monochromatic color themes">🗡️ Hero</button>
+            <button class="option-btn" data-group="quickStyle" data-value="la-la-land"
+              title="Modern musical, Technicolor primaries, magical realism">💃 La La Land</button>
+            <button class="option-btn" data-group="quickStyle" data-value="the-fall"
+              title="Surreal maximalism, painterly colors, exotic locations">👳 The Fall</button>
+            <button class="option-btn" data-group="quickStyle" data-value="1917"
+              title="WWI one-shot realism, overcast day, firelight night">💣 1917</button>
+            <button class="option-btn" data-group="quickStyle" data-value="amelie"
+              title="Whimsical Paris, warm green/red palette, painterly">🥄 Amélie</button>
+            <button class="option-btn" data-group="quickStyle" data-value="shinkai-vibes"
+              title="Makoto Shinkai style, vibrant clouds, lens flares">☁️ Modern Anime</button>
+            <button class="option-btn" data-group="quickStyle" data-value="90s-anime"
+              title="Retro 90s cel animation, film grain, muted colors">📼 90s Cel Style</button>
+            <button class="option-btn" data-group="quickStyle" data-value="dark-fantasy-anime"
+              title="Berserk/Elden Ring style, dark fantasy, grit">⚔️ Dark Fantasy</button>
+            <button class="option-btn" data-group="quickStyle" data-value="ghibli-style"
+              title="Studio Ghibli hand-painted aesthetic, soft nature">🎨 Ghibli Style</button>
+          </div>
+          <div class="hint">Стилевой пресет задаёт полную визуальную эстетику: освещение, цвет, текстуру. При активации
+            блокирует остальные меню.</div>
+        </div>
+
         <!-- Generation Modes Master Toggle -->
         <div class="section" style="border: 2px solid var(--accent); background: rgba(108, 92, 231, 0.05);">
           <div class="section-header">
-            <h2><span class="icon icon-orange">✨</span> Режим генерации <span class="help-tip">?<span class="tip-text"><b>Generate 4</b> — создаёт 4 отдельных изображения с разными кинематографическими
+            <h2><span class="icon icon-orange">✨</span> Режим генерации <span class="help-tip">?<span
+                  class="tip-text"><b>Generate 4</b> — создаёт 4 отдельных изображения с разными кинематографическими
                   ракурсами: Low Angle, Cowboy Shot, Dutch Angle, Three-Quarter. Блокирует объектив, угол и план (они
                   заданы в вариациях). Если заполнено «Описание сцены», слово subject заменяется на ваш
                   текст.<br><br><b>3×3 Contact Sheet</b> — кинематографический контакт-лист из 9 кадров (от ELS до ECU +
@@ -1111,15 +1192,21 @@
                   (взаимоисключающие).</span></span></h2>
           </div>
           <div class="toggle-row">
-            <label class="toggle-label" id="generateFourModeLabel" style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--accent-light);" title="">
+            <label class="toggle-label" id="generateFourModeLabel"
+              style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--accent-light);"
+              title="">
               <span>🎬 Generate 4 Variations</span>
               <input type="checkbox" id="generateFourMode">
             </label>
-            <label class="toggle-label" id="grid3x3ModeLabel" style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--green);" title="">
+            <label class="toggle-label" id="grid3x3ModeLabel"
+              style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--green);"
+              title="">
               <span>📐 3×3 Contact Sheet</span>
               <input type="checkbox" id="grid3x3Mode">
             </label>
-            <label class="toggle-label" id="maxConsistencyLabel" style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--orange);" title="">
+            <label class="toggle-label" id="maxConsistencyLabel"
+              style="flex:1; display:flex; justify-content:space-between; font-weight:bold; color:var(--orange);"
+              title="">
               <span>🔒 Макс. консистентность</span>
               <input type="checkbox" id="maxConsistency">
             </label>
@@ -1133,37 +1220,32 @@
                   готовые наборы параметров для типовых задач. Одним кликом заполняются все
                   настройки. После применения можно подкорректировать любой пункт.</span></span></h2>
           </div>
-          <div class="option-group" id="presetGrid"><button class="option-btn" data-preset-index="0" style="border-color: var(--green); border-width: 2px;">🎬 Кинопортрет</button><button class="option-btn" data-preset-index="1" style="border-color: var(--green); border-width: 2px;">📦 Предметная съёмка</button><button class="option-btn" data-preset-index="2" style="border-color: var(--green); border-width: 2px;">🌃 Неоновый киберпанк</button><button class="option-btn" data-preset-index="3" style="border-color: var(--green); border-width: 2px;">🎨 Концепт-арт</button><button class="option-btn" data-preset-index="4" style="border-color: var(--green); border-width: 2px;">💼 Коммерческая съёмка</button><button class="option-btn" data-preset-index="5" style="border-color: var(--green); border-width: 2px;">📺 Рекламный ролик</button><button class="option-btn" data-preset-index="6" style="border-color: var(--green); border-width: 2px;">🔬 Макро реклама</button><button class="option-btn" data-preset-index="7" style="border-color: var(--green); border-width: 2px;">📷 Естественный портрет</button><button class="option-btn" data-preset-index="8" style="border-color: var(--green); border-width: 2px;">🏙️ Уличный фотореализм</button><button class="option-btn" data-preset-index="9" style="border-color: var(--green); border-width: 2px;">💎 Beauty / Косметика</button></div>
+          <div class="option-group" id="presetGrid"><button class="option-btn" data-preset-index="0"
+              style="border-color: var(--green); border-width: 2px;">🎬 Кинопортрет</button><button class="option-btn"
+              data-preset-index="1" style="border-color: var(--green); border-width: 2px;">📦 Предметная
+              съёмка</button><button class="option-btn" data-preset-index="2"
+              style="border-color: var(--green); border-width: 2px;">🌃 Неоновый киберпанк</button><button
+              class="option-btn" data-preset-index="3" style="border-color: var(--green); border-width: 2px;">🎨
+              Концепт-арт</button><button class="option-btn" data-preset-index="4"
+              style="border-color: var(--green); border-width: 2px;">💼 Коммерческая съёмка</button><button
+              class="option-btn" data-preset-index="5" style="border-color: var(--green); border-width: 2px;">📺
+              Рекламный ролик</button><button class="option-btn" data-preset-index="6"
+              style="border-color: var(--green); border-width: 2px;">🔬 Макро реклама</button><button class="option-btn"
+              data-preset-index="7" style="border-color: var(--green); border-width: 2px;">📷 Естественный
+              портрет</button><button class="option-btn" data-preset-index="8"
+              style="border-color: var(--green); border-width: 2px;">🏙️ Уличный фотореализм</button><button
+              class="option-btn" data-preset-index="9" style="border-color: var(--green); border-width: 2px;">💎 Beauty
+              / Косметика</button></div>
           <div class="hint">Пресет заполняет все параметры за один клик. Можно подправить после.</div>
         </div>
 
-        <!-- Quick Style Presets -->
-        <div class="section">
-          <div class="section-header">
-            <h2><span class="icon icon-purple">🎨</span> Быстрые пресеты <span class="help-tip">?<span class="tip-text">Стилевые пресеты добавляют полный блок визуального стиля в промпт. Выберите один — он задаст освещение, цвет, текстуру и атмосферу. Несовместим с авторскими стилями (Фото/Кино/Режиссёр).</span></span></h2>
-            <span class="mode-badge">single</span>
-          </div>
-          <div class="option-group">
-            <button class="option-btn" data-group="quickStyle" data-value="a24" style="border-color: var(--purple); border-width: 2px;" title="">🎭 Стиль A24</button>
-            <button class="option-btn" data-group="quickStyle" data-value="pixar" style="border-color: var(--purple); border-width: 2px;" title="">🧸 Pixar</button>
-            <button class="option-btn" data-group="quickStyle" data-value="wes-anderson" style="border-color: var(--purple); border-width: 2px;" title="">🏠 Wes Anderson</button>
-            <button class="option-btn" data-group="quickStyle" data-value="marvel-mcu" style="border-color: var(--purple); border-width: 2px;" title="">💥 Marvel MCU</button>
-            <button class="option-btn" data-group="quickStyle" data-value="studio-ghibli" style="border-color: var(--purple); border-width: 2px;" title="">🌿 Studio Ghibli</button>
-            <button class="option-btn" data-group="quickStyle" data-value="spider-verse" style="border-color: var(--purple); border-width: 2px;" title="">🕸️ Spider-Verse</button>
-            <button class="option-btn" data-group="quickStyle" data-value="bbc-period" style="border-color: var(--purple); border-width: 2px;" title="">🕯️ BBC Period</button>
-            <button class="option-btn" data-group="quickStyle" data-value="noir-batman" style="border-color: var(--purple); border-width: 2px;" title="">🌧️ Noir / Batman</button>
-            <button class="option-btn" data-group="quickStyle" data-value="top-gun" style="border-color: var(--purple); border-width: 2px;" title="">☀️ Top Gun</button>
-            <button class="option-btn" data-group="quickStyle" data-value="80s-fantasy" style="border-color: var(--purple); border-width: 2px;" title="">🐉 80s Dark Fantasy</button>
-            <button class="option-btn" data-group="quickStyle" data-value="hbo-prestige" style="border-color: var(--purple); border-width: 2px;" title="">📺 HBO Prestige</button>
-            <button class="option-btn" data-group="quickStyle" data-value="netflix-4k" style="border-color: var(--purple); border-width: 2px;" title="">🎬 Netflix 4K</button>
-          </div>
-          <div class="hint">Стилевой пресет задаёт полную визуальную эстетику: освещение, цвет, текстуру.</div>
-        </div>
+        <!-- Quick Style Presets — moved to top of sidebar -->
 
         <!-- AI Model -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-purple">🤖</span> AI Модель <span class="help-tip">?<span class="tip-text">Выберите нейросеть для генерации. Каждая модель имеет свой синтаксис промптов.
+            <h2><span class="icon icon-purple">🤖</span> AI Модель <span class="help-tip">?<span
+                  class="tip-text">Выберите нейросеть для генерации. Каждая модель имеет свой синтаксис промптов.
                   Midjourney требует «--» параметры, DALL·E и Flux — естественный язык.</span></span></h2>
             <span class="mode-badge">single</span>
           </div>
@@ -1179,22 +1261,27 @@
             <button class="option-btn" data-group="aiModel" data-value="nano-banana-pro" title="">Nano Banana
               Pro</button>
           </div>
-          <div id="modelHint" class="hint" style="display: none;">SD: поддерживает негативы, веса токенов (word:1.3), LoRA. Используйте формат Flat.</div>
+          <div id="modelHint" class="hint" style="display: none;">SD: поддерживает негативы, веса токенов (word:1.3),
+            LoRA. Используйте формат Flat.</div>
         </div>
 
         <!-- Scene Description -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-purple">🎯</span> Описание сцены <span class="help-tip">?<span class="tip-text">Главное текстовое поле промпта — ядро вашего изображения. Пишите на английском для
+            <h2><span class="icon icon-purple">🎯</span> Описание сцены <span class="help-tip">?<span
+                  class="tip-text">Главное текстовое поле промпта — ядро вашего изображения. Пишите на английском для
                   лучшего результата.<br><br><b>Структура:</b><br>1. «Кто/Что» — опишите персонажа (возраст, внешность,
                   одежда)<br>2. «Где» — окружение и локация<br>3. «Действие/Поза» — что делает персонаж<br>4. «Детали» —
                   атмосфера, погода, цвета<br><br><b>Пример:</b> A woman in her 30s with auburn hair, wearing a vintage
                   floral dress, standing at the edge of a misty lake at dawn, looking at the reflection</span></span>
             </h2>
           </div>
-          <textarea class="input-field" id="mainSubject" placeholder="Мужчина 30 лет стоит на балконе небоскрёба с видом на неоновый город в сумерках..." oninput="handleInput()"></textarea>
+          <textarea class="input-field" id="mainSubject"
+            placeholder="Мужчина 30 лет стоит на балконе небоскрёба с видом на неоновый город в сумерках..."
+            oninput="handleInput()"></textarea>
           <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-            <button type="button" id="translateBtn" class="btn btn-ghost" style="min-width:auto;padding:6px 14px;font-size:.82em;" onclick="translateScene()">
+            <button type="button" id="translateBtn" class="btn btn-ghost"
+              style="min-width:auto;padding:6px 14px;font-size:.82em;" onclick="translateScene()">
               🌐 Перевести на EN
             </button>
             <span id="translateStatus" style="font-size:.78em;color:var(--text-muted);"></span>
@@ -1205,9 +1292,10 @@
         </div>
 
         <!-- Aspect Ratio -->
-        <div class="section">
+        <div class="section" id="aspectRatioSection">
           <div class="section-header">
-            <h2><span class="icon icon-purple">📐</span> Соотношение сторон <span class="help-tip">?<span class="tip-text">1:1 — Instagram. 16:9 — YouTube, кино. 9:16 — Stories/Reels. 21:9 — ультра-широкий
+            <h2><span class="icon icon-purple">📐</span> Соотношение сторон <span class="help-tip">?<span
+                  class="tip-text">1:1 — Instagram. 16:9 — YouTube, кино. 9:16 — Stories/Reels. 21:9 — ультра-широкий
                   кинокадр. 3:4 — Pinterest, портреты. После выбора станут доступны разрешения.</span></span></h2>
             <span class="mode-badge">single</span>
           </div>
@@ -1227,7 +1315,8 @@
         <!-- Resolution -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-purple">📏</span> Разрешение <span class="help-tip">?<span class="tip-text">Размер в пикселях. Для соцсетей — Full HD. Для печати — 4K и выше. Зависит от
+            <h2><span class="icon icon-purple">📏</span> Разрешение <span class="help-tip">?<span
+                  class="tip-text">Размер в пикселях. Для соцсетей — Full HD. Для печати — 4K и выше. Зависит от
                   выбранного соотношения сторон.</span></span></h2>
             <span class="mode-badge">single</span>
           </div>
@@ -1238,7 +1327,8 @@
         <!-- Purpose & Format -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-orange">🎬</span> Назначение и формат <span class="help-tip">?<span class="tip-text">«Назначение» — контекст съёмки (продукт, реклама, кино). «Формат» — художественный
+            <h2><span class="icon icon-orange">🎬</span> Назначение и формат <span class="help-tip">?<span
+                  class="tip-text">«Назначение» — контекст съёмки (продукт, реклама, кино). «Формат» — художественный
                   стиль (фото, 3D, масло). Можно свободно сочетать.</span></span></h2>
             <span class="mode-badge">single</span>
           </div>
@@ -1286,7 +1376,8 @@
               X-T5</button>
             <button class="option-btn" data-group="cameraBody" data-value="shot on Leica M11" title="">Leica
               M11</button>
-            <button class="option-btn" data-group="cameraBody" data-value="shot on Hasselblad X2D 100C" title="">Hasselblad
+            <button class="option-btn" data-group="cameraBody" data-value="shot on Hasselblad X2D 100C"
+              title="">Hasselblad
               X2D</button>
             <button class="option-btn" data-group="cameraBody" data-value="shot on Phase One IQ4 150MP" title="">Phase
               One
@@ -1295,7 +1386,8 @@
               35</button>
             <button class="option-btn" data-group="cameraBody" data-value="shot on RED V-Raptor" title="">RED
               V-Raptor</button>
-            <button class="option-btn" data-group="cameraBody" data-value="shot on Blackmagic URSA Mini Pro 12K" title="">Blackmagic 12K</button>
+            <button class="option-btn" data-group="cameraBody" data-value="shot on Blackmagic URSA Mini Pro 12K"
+              title="">Blackmagic 12K</button>
           </div>
           <div class="hint">Фото: Sony, Canon, Nikon, Fuji, Leica, Hasselblad, Phase One. Видео: ARRI, RED, Blackmagic.
           </div>
@@ -1360,34 +1452,72 @@
               Macro Art</button>
             <button class="option-btn" data-group="lens" data-value="Zeiss Otus 55mm f/1.4" title="">Zeiss Otus 55mm
               f/1.4</button>
-            <button class="option-btn" data-group="lens" data-value="Leica Summilux-M 50mm f/1.4 ASPH" title="">Leica Summilux
+            <button class="option-btn" data-group="lens" data-value="Leica Summilux-M 50mm f/1.4 ASPH" title="">Leica
+              Summilux
               50mm</button>
           </div>
 
           <span class="sub-label">Кино-оптика</span>
           <div class="option-group">
-            <button class="option-btn" data-group="lens" data-value="Cooke S7/i 50mm T2.0 Full Frame Plus" title="">Cooke S7/i
+            <button class="option-btn" data-group="lens" data-value="Cooke S7/i 50mm T2.0 Full Frame Plus"
+              title="">Cooke S7/i
               50mm</button>
             <button class="option-btn" data-group="lens" data-value="ARRI Signature Prime 35mm T1.8" title="">ARRI
               Signature
               35mm</button>
             <button class="option-btn" data-group="lens" data-value="Panavision Primo 70mm" title="">Panavision Primo
               70mm</button>
-            <button class="option-btn" data-group="lens" data-value="Anamorphic 2x squeeze, oval bokeh, lens flare" title="">Anamorphic 2x</button>
+            <button class="option-btn" data-group="lens" data-value="Anamorphic 2x squeeze, oval bokeh, lens flare"
+              title="">Anamorphic 2x</button>
+          </div>
+        </div>
+
+        <!-- Film Stocks -->
+        <div class="section" id="filmStockSection">
+          <div class="section-header">
+            <h2><span class="icon icon-yellow">🎞️</span> Киноплёнка <span class="help-tip">?<span
+                  class="tip-text">Эмуляция легендарных фото- и киноплёнок. Влияет на цвет, зерно и
+                  контраст.</span></span></h2>
+            <span class="mode-badge">single</span>
+          </div>
+          <div class="option-group">
+            <button class="option-btn" data-group="filmStock" data-value="Kodak Portra 400"
+              title="Естественные скинтоны, тёплая ностальгия">Kodak Portra 400</button>
+            <button class="option-btn" data-group="filmStock" data-value="CineStill 800T"
+              title="Вечерняя съёмка, ореолы вокруг света (halation)">CineStill 800T</button>
+            <button class="option-btn" data-group="filmStock" data-value="Kodak Gold 200"
+              title="Золотистые тёплые тона, классика">Kodak Gold 200</button>
+            <button class="option-btn" data-group="filmStock" data-value="Fujifilm Pro 400H"
+              title="Мягкие пастельные тона, холодные тени">Fuji Pro 400H</button>
+            <button class="option-btn" data-group="filmStock" data-value="Kodak Ektar 100"
+              title="Высокая насыщенность и резкость, пейзажи">Kodak Ektar 100</button>
+            <button class="option-btn" data-group="filmStock" data-value="Kodak Tri-X 400"
+              title="Ч/Б, высокий контраст, зерно">Kodak Tri-X 400 (B&W)</button>
+            <button class="option-btn" data-group="filmStock" data-value="Ilford HP5 Plus"
+              title="Ч/Б, широкий диапазон, мягкое зерно">Ilford HP5 Plus (B&W)</button>
+            <button class="option-btn" data-group="filmStock" data-value="Fujifilm Velvia 50"
+              title="Экстремальная насыщенность, природа">Fuji Velvia 50</button>
+            <button class="option-btn" data-group="filmStock" data-value="Kodak Vision3 500T"
+              title="Кинематографичная плёнка, баланс вольфрам">Kodak Vision3 500T</button>
+            <button class="option-btn" data-group="filmStock" data-value="Kodak Aerochrome"
+              title="Инфракрасная плёнка, розовая листва">Kodak Aerochrome (IR)</button>
           </div>
         </div>
 
         <!-- Aperture & Angle & Composition -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-orange">🎥</span> Параметры съёмки <span class="help-tip">?<span class="tip-text">«Диафрагма» — глубина резкости. «Угол» — откуда смотрит камера. «Ракурс/План» —
+            <h2><span class="icon icon-orange">🎥</span> Параметры съёмки <span class="help-tip">?<span
+                  class="tip-text">«Диафрагма» — глубина резкости. «Угол» — откуда смотрит камера. «Ракурс/План» —
                   крупность показа. Все три параметра независимы.</span></span></h2>
           </div>
 
           <span class="sub-label">Диафрагма <span class="mode-badge" style="margin-left:6px">single</span></span>
           <div class="option-group">
-            <button class="option-btn" data-group="aperture" data-value="f/1.2, extremely shallow depth of field, dreamy bokeh" title="">f/1.2 Макс. боке</button>
-            <button class="option-btn" data-group="aperture" data-value="f/1.4, shallow depth of field, creamy bokeh" title="">f/1.4 Боке</button>
+            <button class="option-btn" data-group="aperture"
+              data-value="f/1.2, extremely shallow depth of field, dreamy bokeh" title="">f/1.2 Макс. боке</button>
+            <button class="option-btn" data-group="aperture" data-value="f/1.4, shallow depth of field, creamy bokeh"
+              title="">f/1.4 Боке</button>
             <button class="option-btn" data-group="aperture" data-value="f/1.8, portrait bokeh" title="">f/1.8
               Портрет</button>
             <button class="option-btn" data-group="aperture" data-value="f/2.8, balanced depth of field" title="">f/2.8
@@ -1398,16 +1528,19 @@
               резкость</button>
             <button class="option-btn" data-group="aperture" data-value="f/11, maximum sharpness" title="">f/11 Макс.
               резкость</button>
-            <button class="option-btn" data-group="aperture" data-value="f/16, hyperfocal distance, everything in focus" title="">f/16 Гиперфокал</button>
+            <button class="option-btn" data-group="aperture" data-value="f/16, hyperfocal distance, everything in focus"
+              title="">f/16 Гиперфокал</button>
           </div>
 
           <span class="sub-label">Угол съёмки <span class="mode-badge" style="margin-left:6px">single</span></span>
           <div class="option-group">
-            <button class="option-btn" data-group="angle" data-value="extreme low angle, worm&#39;s eye view" title="">Экстремально
+            <button class="option-btn" data-group="angle" data-value="extreme low angle, worm&#39;s eye view"
+              title="">Экстремально
               снизу</button>
             <button class="option-btn" data-group="angle" data-value="low angle shot" title="">Снизу (Low
               Angle)</button>
-            <button class="option-btn" data-group="angle" data-value="slightly low angle, hero shot" title="">Героический (чуть
+            <button class="option-btn" data-group="angle" data-value="slightly low angle, hero shot"
+              title="">Героический (чуть
               снизу)</button>
             <button class="option-btn" data-group="angle" data-value="eye level" title="">Уровень глаз</button>
             <button class="option-btn" data-group="angle" data-value="slightly high angle" title="">Чуть сверху</button>
@@ -1427,26 +1560,33 @@
 
           <span class="sub-label">Ракурс / План <span class="mode-badge" style="margin-left:6px">single</span></span>
           <div class="option-group">
-            <button class="option-btn" data-group="composition" data-value="extreme close-up, face detail" title="">Экстр.
+            <button class="option-btn" data-group="composition" data-value="extreme close-up, face detail"
+              title="">Экстр.
               крупный план</button>
-            <button class="option-btn" data-group="composition" data-value="close-up portrait, head and shoulders" title="">Крупный план</button>
+            <button class="option-btn" data-group="composition" data-value="close-up portrait, head and shoulders"
+              title="">Крупный план</button>
             <button class="option-btn" data-group="composition" data-value="medium close-up, chest up" title="">Поясной
               план</button>
-            <button class="option-btn" data-group="composition" data-value="medium shot, waist up" title="">Средний план</button>
+            <button class="option-btn" data-group="composition" data-value="medium shot, waist up" title="">Средний
+              план</button>
             <button class="option-btn" data-group="composition" data-value="full body shot, head to toe" title="">Полный
               рост</button>
-            <button class="option-btn" data-group="composition" data-value="wide shot, subject in environment" title="">Общий
+            <button class="option-btn" data-group="composition" data-value="wide shot, subject in environment"
+              title="">Общий
               план</button>
-            <button class="option-btn" data-group="composition" data-value="extreme wide shot, vast landscape" title="">Дальний
+            <button class="option-btn" data-group="composition" data-value="extreme wide shot, vast landscape"
+              title="">Дальний
               план</button>
-            <button class="option-btn" data-group="composition" data-value="overhead flat lay, knolling arrangement" title="">Раскладка (Flat lay)</button>
+            <button class="option-btn" data-group="composition" data-value="overhead flat lay, knolling arrangement"
+              title="">Раскладка (Flat lay)</button>
           </div>
         </div>
 
         <!-- Lighting -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-orange">💡</span> Освещение <span class="help-tip">?<span class="tip-text">Ключевой параметр. «Тип» — Primary+Accent (1-й клик = основной, 2-й =
+            <h2><span class="icon icon-orange">💡</span> Освещение <span class="help-tip">?<span
+                  class="tip-text">Ключевой параметр. «Тип» — Primary+Accent (1-й клик = основной, 2-й =
                   дополнительный). «Время суток» — аналогично. «Эффекты» — мультивыбор.</span></span></h2>
           </div>
 
@@ -1458,18 +1598,26 @@
             <button class="option-btn" data-group="lightType" data-value="studio three-point lighting" title="">Студия
               3-точки</button>
             <button class="option-btn" data-group="lightType" data-value="neon glow lighting" title="">Neon</button>
-            <button class="option-btn" data-group="lightType" data-value="dramatic chiaroscuro" title="">Кьяроскуро</button>
-            <button class="option-btn" data-group="lightType" data-value="softbox beauty light" title="">Softbox</button>
+            <button class="option-btn" data-group="lightType" data-value="dramatic chiaroscuro"
+              title="">Кьяроскуро</button>
+            <button class="option-btn" data-group="lightType" data-value="softbox beauty light"
+              title="">Softbox</button>
             <button class="option-btn" data-group="lightType" data-value="backlighting silhouette" title="">Контровой
               свет</button>
-            <button class="option-btn" data-group="lightType" data-value="Rembrandt lighting, triangle shadow on cheek" title="">Рембрандт</button>
-            <button class="option-btn" data-group="lightType" data-value="butterfly lighting, paramount glamour" title="">Butterfly (Голливуд)</button>
-            <button class="option-btn" data-group="lightType" data-value="split lighting, half face shadow" title="">Сплит
+            <button class="option-btn" data-group="lightType" data-value="Rembrandt lighting, triangle shadow on cheek"
+              title="">Рембрандт</button>
+            <button class="option-btn" data-group="lightType" data-value="butterfly lighting, paramount glamour"
+              title="">Butterfly (Голливуд)</button>
+            <button class="option-btn" data-group="lightType" data-value="split lighting, half face shadow"
+              title="">Сплит
               (половина)</button>
-            <button class="option-btn" data-group="lightType" data-value="clamshell lighting, beauty commercial" title="">Clamshell (реклама)</button>
-            <button class="option-btn" data-group="lightType" data-value="broad lighting, wide face illumination" title="">Broad
+            <button class="option-btn" data-group="lightType" data-value="clamshell lighting, beauty commercial"
+              title="">Clamshell (реклама)</button>
+            <button class="option-btn" data-group="lightType" data-value="broad lighting, wide face illumination"
+              title="">Broad
               Light</button>
-            <button class="option-btn" data-group="lightType" data-value="high-key lighting, bright even exposure, minimal shadows" title="">High-Key (яркий)</button>
+            <button class="option-btn" data-group="lightType"
+              data-value="high-key lighting, bright even exposure, minimal shadows" title="">High-Key (яркий)</button>
           </div>
           <div class="hint">1-й клик = Primary (P), 2-й на другую = Accent (A). Повторный клик снимает выбор.</div>
 
@@ -1481,8 +1629,10 @@
             <button class="option-btn" data-group="timeOfDay" data-value="blue hour twilight" title="">Blue
               Hour</button>
             <button class="option-btn" data-group="timeOfDay" data-value="bright midday sun" title="">Полдень</button>
-            <button class="option-btn" data-group="timeOfDay" data-value="night, artificial lighting" title="">Ночь</button>
-            <button class="option-btn" data-group="timeOfDay" data-value="overcast diffused light" title="">Пасмурно</button>
+            <button class="option-btn" data-group="timeOfDay" data-value="night, artificial lighting"
+              title="">Ночь</button>
+            <button class="option-btn" data-group="timeOfDay" data-value="overcast diffused light"
+              title="">Пасмурно</button>
           </div>
 
           <span class="sub-label">Эффекты <span class="mode-badge multi" style="margin-left:6px">multi</span></span>
@@ -1502,45 +1652,98 @@
         <!-- Color Palette -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-green">🎨</span> Цветовая палитра <span class="help-tip">?<span class="tip-text">Задаёт доминирующую цветовую схему. Влияет на общее настроение, контраст и восприятие
+            <h2><span class="icon icon-green">🎨</span> Цветовая палитра <span class="help-tip">?<span
+                  class="tip-text">Задаёт доминирующую цветовую схему. Влияет на общее настроение, контраст и восприятие
                   сцены.</span></span></h2>
             <span class="mode-badge">single</span>
           </div>
-          <div class="option-group" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:6px;">
-            <button class="option-btn" data-group="colorPalette" data-value="warm golden tones, amber and honey hues, sunset warmth" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#D4A574;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#C67D3E;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#8B5E3C;display:block;"></span></span>Тёплые
+          <div class="option-group"
+            style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:6px;">
+            <button class="option-btn" data-group="colorPalette"
+              data-value="warm golden tones, amber and honey hues, sunset warmth"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#D4A574;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#C67D3E;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#8B5E3C;display:block;"></span></span>Тёплые
               золотые</button>
-            <button class="option-btn" data-group="colorPalette" data-value="cool blue tones, steel and ice palette, arctic atmosphere" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#A8C8E8;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#5B8DB8;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#2C5F8A;display:block;"></span></span>Холодные
+            <button class="option-btn" data-group="colorPalette"
+              data-value="cool blue tones, steel and ice palette, arctic atmosphere"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#A8C8E8;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#5B8DB8;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#2C5F8A;display:block;"></span></span>Холодные
               синие</button>
-            <button class="option-btn" data-group="colorPalette" data-value="teal and orange cinematic color grading, complementary contrast" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#E8956A;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#2D8B8B;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#1A5C5C;display:block;"></span></span>Teal
+            <button class="option-btn" data-group="colorPalette"
+              data-value="teal and orange cinematic color grading, complementary contrast"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#E8956A;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#2D8B8B;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#1A5C5C;display:block;"></span></span>Teal
               &amp; Orange</button>
-            <button class="option-btn" data-group="colorPalette" data-value="desaturated muted earth tones, faded vintage palette" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#B8A898;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#8C7B6B;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#5C4F42;display:block;"></span></span>Приглушённые</button>
-            <button class="option-btn" data-group="colorPalette" data-value="high saturation vivid colors, bold primary palette, vibrant pop" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#FF4757;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#2ED573;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#3742FA;display:block;"></span></span>Яркие
+            <button class="option-btn" data-group="colorPalette"
+              data-value="desaturated muted earth tones, faded vintage palette"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#B8A898;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#8C7B6B;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#5C4F42;display:block;"></span></span>Приглушённые</button>
+            <button class="option-btn" data-group="colorPalette"
+              data-value="high saturation vivid colors, bold primary palette, vibrant pop"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#FF4757;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#2ED573;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#3742FA;display:block;"></span></span>Яркие
               / Vivid</button>
-            <button class="option-btn active" data-group="colorPalette" data-value="soft pastel palette, delicate lavender and blush tones, dreamy muted colors" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#F8C8DC;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#C3B1E1;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#A8D8EA;display:block;"></span></span>Пастельные</button>
-            <button class="option-btn" data-group="colorPalette" data-value="monochrome black and white, high contrast grayscale" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#222;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#888;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#DDD;display:block;"></span></span>Ч/Б
+            <button class="option-btn active" data-group="colorPalette"
+              data-value="soft pastel palette, delicate lavender and blush tones, dreamy muted colors"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#F8C8DC;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#C3B1E1;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#A8D8EA;display:block;"></span></span>Пастельные</button>
+            <button class="option-btn" data-group="colorPalette"
+              data-value="monochrome black and white, high contrast grayscale"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#222;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#888;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#DDD;display:block;"></span></span>Ч/Б
               моно</button>
-            <button class="option-btn" data-group="colorPalette" data-value="neon cyberpunk palette, electric magenta and cyan, glowing fluorescent" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#FF00FF;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#00FFFF;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#7B2FBE;display:block;"></span></span>Неон /
+            <button class="option-btn" data-group="colorPalette"
+              data-value="neon cyberpunk palette, electric magenta and cyan, glowing fluorescent"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#FF00FF;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#00FFFF;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#7B2FBE;display:block;"></span></span>Неон /
               Киберпанк</button>
-            <button class="option-btn" data-group="colorPalette" data-value="dark moody palette, deep shadows, noir atmosphere, low-key tones" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#1A1A2E;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#16213E;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#0F3460;display:block;"></span></span>Тёмный
+            <button class="option-btn" data-group="colorPalette"
+              data-value="dark moody palette, deep shadows, noir atmosphere, low-key tones"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#1A1A2E;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#16213E;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#0F3460;display:block;"></span></span>Тёмный
               / Noir</button>
-            <button class="option-btn" data-group="colorPalette" data-value="natural forest greens and earth browns, organic woodland palette" style="position:relative;padding-left:40px;" title="">
-              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span style="width:8px;height:18px;border-radius:2px;background:#6B8E4E;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#3E6B31;display:block;"></span><span style="width:8px;height:18px;border-radius:2px;background:#8B6914;display:block;"></span></span>Природные</button>
+            <button class="option-btn" data-group="colorPalette"
+              data-value="natural forest greens and earth browns, organic woodland palette"
+              style="position:relative;padding-left:40px;" title="">
+              <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px;"><span
+                  style="width:8px;height:18px;border-radius:2px;background:#6B8E4E;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#3E6B31;display:block;"></span><span
+                  style="width:8px;height:18px;border-radius:2px;background:#8B6914;display:block;"></span></span>Природные</button>
           </div>
         </div>
 
         <!-- Materials -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-green">🧬</span> Материалы и текстуры <span class="help-tip">?<span class="tip-text"><b>Материалы и текстуры</b> — управляет физическими свойствами поверхностей в
+            <h2><span class="icon icon-green">🧬</span> Материалы и текстуры <span class="help-tip">?<span
+                  class="tip-text"><b>Материалы и текстуры</b> — управляет физическими свойствами поверхностей в
                   кадре.<br><br><b>Детали кожи:</b> Добавляет фотореалистичные микро-детали кожи — поры, пушок, морщины,
                   капилляры. Каждая опция усиливает реализм портрета.<br><br><b>Детализация волос:</b> Контролирует
                   рендеринг отдельных волосков, бликов, динамики движения.<br><br><b>Материалы объектов:</b> Задаёт
@@ -1548,28 +1751,37 @@
                   активируют глубокий JSON-конфиг с физикой рендеринга на уровне VFX-студий.</span></span></h2>
           </div>
 
-          <span class="sub-label">Детали кожи (портреты) <span class="mode-badge multi" style="margin-left:6px">multi</span></span>
+          <span class="sub-label">Детали кожи (портреты) <span class="mode-badge multi"
+              style="margin-left:6px">multi</span></span>
           <div class="option-group">
-            <button class="option-btn" data-group="skinDetail" data-value="visible skin pores, natural grain" title="">Поры
+            <button class="option-btn" data-group="skinDetail" data-value="visible skin pores, natural grain"
+              title="">Поры
               кожи</button>
             <button class="option-btn" data-group="skinDetail" data-value="peach fuzz, vellus hair" title="">Пушок
               (vellus)</button>
-            <button class="option-btn" data-group="skinDetail" data-value="natural freckles and imperfections" title="">Веснушки</button>
+            <button class="option-btn" data-group="skinDetail" data-value="natural freckles and imperfections"
+              title="">Веснушки</button>
             <button class="option-btn" data-group="skinDetail" data-value="subtle under-eye texture" title="">Текстура
               под
               глазами</button>
-            <button class="option-btn" data-group="skinDetail" data-value="mimic wrinkles, fine lines, expression lines" title="">Мимические
+            <button class="option-btn" data-group="skinDetail" data-value="mimic wrinkles, fine lines, expression lines"
+              title="">Мимические
               морщины</button>
-            <button class="option-btn" data-group="skinDetail" data-value="beauty marks, moles, realistic skin features" title="">Родинки</button>
-            <button class="option-btn" data-group="skinDetail" data-value="visible capillaries, spider veins, thin skin transparency" title="">Микро-сосуды</button>
-            <button class="option-btn" data-group="skinDetail" data-value="slight pigmentation, uneven skin tone, natural skin discoloration" title="">Неровный
+            <button class="option-btn" data-group="skinDetail" data-value="beauty marks, moles, realistic skin features"
+              title="">Родинки</button>
+            <button class="option-btn" data-group="skinDetail"
+              data-value="visible capillaries, spider veins, thin skin transparency" title="">Микро-сосуды</button>
+            <button class="option-btn" data-group="skinDetail"
+              data-value="slight pigmentation, uneven skin tone, natural skin discoloration" title="">Неровный
               тон</button>
-            <button class="option-btn" data-group="skinDetail" data-value="natural skin sheen, slight oiliness, specular highlights on skin" title="">Живой
+            <button class="option-btn" data-group="skinDetail"
+              data-value="natural skin sheen, slight oiliness, specular highlights on skin" title="">Живой
               блеск</button>
           </div>
 
           <div style="margin-top:6px;margin-bottom:10px;">
-            <label class="toggle-label" id="skinRenderBoostLabel" style="display: inline-flex; gap: 8px; font-size: 0.88em; color: var(--green);" title="">
+            <label class="toggle-label" id="skinRenderBoostLabel"
+              style="display: inline-flex; gap: 8px; font-size: 0.88em; color: var(--green);" title="">
               <input type="checkbox" id="skinRenderBoost"> ✨ Усиленная Прорисовка кожи
               <span class="help-tip">?<span class="tip-text">Активирует глубокую микро-детализацию кожи на уровне 8K:
                   эпидермальная физика (SSS-рассеивание, натуральный себум-блеск), дерматологические несовершенства
@@ -1578,22 +1790,31 @@
             </label>
           </div>
 
-          <span class="sub-label">Детализация волос <span class="mode-badge multi" style="margin-left:6px">multi</span></span>
+          <span class="sub-label">Детализация волос <span class="mode-badge multi"
+              style="margin-left:6px">multi</span></span>
           <div class="option-group">
-            <button class="option-btn" data-group="hairDetail" data-value="ultra detailed individual hair strands, each strand visible, photorealistic hair" title="">Каждый
+            <button class="option-btn" data-group="hairDetail"
+              data-value="ultra detailed individual hair strands, each strand visible, photorealistic hair"
+              title="">Каждый
               волосок</button>
-            <button class="option-btn" data-group="hairDetail" data-value="flyaway baby hairs, wispy strands, backlit hair glow" title="">Пушковые (baby hair)</button>
-            <button class="option-btn" data-group="hairDetail" data-value="detailed hair highlights, light catching individual strands, hair shine" title="">Блики на
+            <button class="option-btn" data-group="hairDetail"
+              data-value="flyaway baby hairs, wispy strands, backlit hair glow" title="">Пушковые (baby hair)</button>
+            <button class="option-btn" data-group="hairDetail"
+              data-value="detailed hair highlights, light catching individual strands, hair shine" title="">Блики на
               волосах</button>
-            <button class="option-btn" data-group="hairDetail" data-value="wind-blown dynamic hair movement, flowing individual strands" title="">Развевающиеся</button>
-            <button class="option-btn" data-group="hairDetail" data-value="wet hair strands, clumped detailed locks, water droplets on hair" title="">Мокрые
+            <button class="option-btn" data-group="hairDetail"
+              data-value="wind-blown dynamic hair movement, flowing individual strands" title="">Развевающиеся</button>
+            <button class="option-btn" data-group="hairDetail"
+              data-value="wet hair strands, clumped detailed locks, water droplets on hair" title="">Мокрые
               волосы</button>
-            <button class="option-btn" data-group="hairDetail" data-value="intricate braided hair, detailed woven texture, every strand in braid visible" title="">Коса /
+            <button class="option-btn" data-group="hairDetail"
+              data-value="intricate braided hair, detailed woven texture, every strand in braid visible" title="">Коса /
               плетение</button>
           </div>
 
           <div style="margin-top:6px;margin-bottom:10px;">
-            <label class="toggle-label" id="hairRenderBoostLabel" style="display: inline-flex; gap: 8px; font-size: 0.88em; color: var(--green);" title="">
+            <label class="toggle-label" id="hairRenderBoostLabel"
+              style="display: inline-flex; gap: 8px; font-size: 0.88em; color: var(--green);" title="">
               <input type="checkbox" id="hairRenderBoost"> ✨ Усиленная Прорисовка волос
               <span class="help-tip">?<span class="tip-text">Активирует strand-based симуляцию волос: каждый волосок
                   виден отдельно (не сетка), натуральная плотность фолликулов с видимым скальпом на проборе,
@@ -1603,7 +1824,8 @@
             </label>
           </div>
 
-          <span class="sub-label">Материалы объектов <span class="mode-badge multi" style="margin-left:6px">multi</span></span>
+          <span class="sub-label">Материалы объектов <span class="mode-badge multi"
+              style="margin-left:6px">multi</span></span>
           <div class="option-group">
             <button class="option-btn" data-group="material" data-value="brushed steel" title="">Brushed Steel</button>
             <button class="option-btn" data-group="material" data-value="matte finish" title="">Matte</button>
@@ -1613,22 +1835,31 @@
             <button class="option-btn" data-group="material" data-value="wet asphalt reflections" title="">Мокрый
               асфальт</button>
             <button class="option-btn" data-group="material" data-value="rough concrete" title="">Бетон</button>
-            <button class="option-btn" data-group="material" data-value="frosted glass, translucent diffused" title="">Мат.
+            <button class="option-btn" data-group="material" data-value="frosted glass, translucent diffused"
+              title="">Мат.
               стекло</button>
-            <button class="option-btn" data-group="material" data-value="clear glass, transparent, refractive" title="">Стекло</button>
-            <button class="option-btn" data-group="material" data-value="crystal, faceted, prismatic light dispersion" title="">Хрусталь</button>
-            <button class="option-btn" data-group="material" data-value="polished marble, veined stone" title="">Мрамор</button>
-            <button class="option-btn" data-group="material" data-value="raw wood grain, natural timber" title="">Дерево</button>
-            <button class="option-btn" data-group="material" data-value="silk fabric, flowing, shiny textile" title="">Шёлк</button>
-            <button class="option-btn" data-group="material" data-value="ceramic, glazed pottery" title="">Керамика</button>
-            <button class="option-btn" data-group="material" data-value="gold, 24k polished gold surface" title="">Золото</button>
+            <button class="option-btn" data-group="material" data-value="clear glass, transparent, refractive"
+              title="">Стекло</button>
+            <button class="option-btn" data-group="material" data-value="crystal, faceted, prismatic light dispersion"
+              title="">Хрусталь</button>
+            <button class="option-btn" data-group="material" data-value="polished marble, veined stone"
+              title="">Мрамор</button>
+            <button class="option-btn" data-group="material" data-value="raw wood grain, natural timber"
+              title="">Дерево</button>
+            <button class="option-btn" data-group="material" data-value="silk fabric, flowing, shiny textile"
+              title="">Шёлк</button>
+            <button class="option-btn" data-group="material" data-value="ceramic, glazed pottery"
+              title="">Керамика</button>
+            <button class="option-btn" data-group="material" data-value="gold, 24k polished gold surface"
+              title="">Золото</button>
           </div>
         </div>
 
         <!-- Photographer Style -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-green">🎨</span> Стиль фотографа <span class="help-tip">?<span class="tip-text"><b>Стиль фотографа</b> — стилизация в манере знаменитых фотографов. Добавляет «in the
+            <h2><span class="icon icon-green">🎨</span> Стиль фотографа <span class="help-tip">?<span
+                  class="tip-text"><b>Стиль фотографа</b> — стилизация в манере знаменитых фотографов. Добавляет «in the
                   style of [имя]» в промпт.<br><br><b>Влияет на:</b> цветовую палитру, контрастность, настроение,
                   характер освещения, работу с тенями.<br><br><b>Лучше работает:</b> Midjourney, Stable Diffusion,
                   Flux.<br><br><b>Совет:</b> Выбор одного стиля даёт чистый результат. При выборе стиля фотографа
@@ -1636,25 +1867,41 @@
             <span class="mode-badge">single</span>
           </div>
           <div class="option-group">
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Annie Leibovitz, dramatic portrait lighting, rich colors" title="">Annie
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Annie Leibovitz, dramatic portrait lighting, rich colors" title="">Annie
               Leibovitz</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Peter Lindbergh, black and white, raw beauty, minimal retouching" title="">Peter
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Peter Lindbergh, black and white, raw beauty, minimal retouching"
+              title="">Peter
               Lindbergh</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Steve McCurry, vivid saturated colors, documentary" title="">Steve
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Steve McCurry, vivid saturated colors, documentary" title="">Steve
               McCurry</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Helmut Newton, high contrast, provocative glamour, black and white" title="">Helmut
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Helmut Newton, high contrast, provocative glamour, black and white"
+              title="">Helmut
               Newton</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Mario Testino, warm golden tones, glossy fashion" title="">Mario
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Mario Testino, warm golden tones, glossy fashion" title="">Mario
               Testino</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Tim Walker, surreal, fantastical, pastel dreamlike" title="">Tim
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Tim Walker, surreal, fantastical, pastel dreamlike" title="">Tim
               Walker</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Ansel Adams, high dynamic range landscape, deep blacks, zone system" title="">Ansel
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Ansel Adams, high dynamic range landscape, deep blacks, zone system"
+              title="">Ansel
               Adams</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Richard Avedon, stark white background, high contrast portrait" title="">Richard
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Richard Avedon, stark white background, high contrast portrait"
+              title="">Richard
               Avedon</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Guy Bourdin, bold saturated colors, surreal fashion, strong shadows" title="">Guy
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Guy Bourdin, bold saturated colors, surreal fashion, strong shadows"
+              title="">Guy
               Bourdin</button>
-            <button class="option-btn" data-group="photoStyle" data-value="in the style of Gregory Crewdson, cinematic suburban, eerie twilight, elaborate staged" title="">Gregory
+            <button class="option-btn" data-group="photoStyle"
+              data-value="in the style of Gregory Crewdson, cinematic suburban, eerie twilight, elaborate staged"
+              title="">Gregory
               Crewdson</button>
           </div>
         </div>
@@ -1662,7 +1909,8 @@
         <!-- Cinematographer Style -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-green">🎞️</span> Стиль кинооператора <span class="help-tip">?<span class="tip-text"><b>Стиль кинооператора</b> — стилизация в манере легендарных DP (Director of
+            <h2><span class="icon icon-green">🎞️</span> Стиль кинооператора <span class="help-tip">?<span
+                  class="tip-text"><b>Стиль кинооператора</b> — стилизация в манере легендарных DP (Director of
                   Photography).<br><br><b>Влияет на:</b> рисунок освещения, цветокоррекцию, контраст, глубину теней,
                   атмосферу кадра.<br><br><b>Сочетается с камерами:</b> ARRI, RED, Panavision.<br><br><b>Совместные
                     работы:</b> При выборе кинооператора разблокируются только те режиссёры, с которыми он работал в
@@ -1671,25 +1919,40 @@
             <span class="mode-badge">single</span>
           </div>
           <div class="option-group">
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Roger Deakins, naturalistic light, precise framing, atmospheric" title="">Роджер
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Roger Deakins, naturalistic light, precise framing, atmospheric"
+              title="">Роджер
               Дикинс</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Emmanuel Lubezki, long takes, natural light, immersive" title="">Эммануэль
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Emmanuel Lubezki, long takes, natural light, immersive" title="">Эммануэль
               Любецки</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Hoyte van Hoytema, IMAX, desaturated palette, epic scale" title="">Хойте ван
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Hoyte van Hoytema, IMAX, desaturated palette, epic scale" title="">Хойте ван
               Хойтема</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Robert Richardson, high contrast, bold color, dynamic lighting" title="">Роберт
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Robert Richardson, high contrast, bold color, dynamic lighting"
+              title="">Роберт
               Ричардсон</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Bradford Young, low-key lighting, rich shadows, warm undertones" title="">Брэдфорд
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Bradford Young, low-key lighting, rich shadows, warm undertones"
+              title="">Брэдфорд
               Янг</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Janusz Kaminski, overexposed highlights, bleach bypass" title="">Януш
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Janusz Kaminski, overexposed highlights, bleach bypass" title="">Януш
               Каминьски</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Vittorio Storaro, painterly light, rich color symbolism" title="">Витторио
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Vittorio Storaro, painterly light, rich color symbolism" title="">Витторио
               Стораро</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Greig Fraser, anamorphic, moody atmosphere, teal and orange" title="">Грейг
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Greig Fraser, anamorphic, moody atmosphere, teal and orange" title="">Грейг
               Фрейзер</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Linus Sandgren, warm nostalgic tones, golden light, film grain" title="">Линус
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Linus Sandgren, warm nostalgic tones, golden light, film grain"
+              title="">Линус
               Сандгрен</button>
-            <button class="option-btn" data-group="cinemaStyle" data-value="cinematography by Ari Wegner, textured natural light, intimate framing, muted palette" title="">Ари
+            <button class="option-btn" data-group="cinemaStyle"
+              data-value="cinematography by Ari Wegner, textured natural light, intimate framing, muted palette"
+              title="">Ари
               Вегнер</button>
           </div>
         </div>
@@ -1697,7 +1960,8 @@
         <!-- Director Style -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-orange">🎬</span> Стиль режиссёра <span class="help-tip">?<span class="tip-text"><b>Стиль режиссёра</b> — визуальный почерк знаменитых режиссёров.<br><br><b>Влияет
+            <h2><span class="icon icon-orange">🎬</span> Стиль режиссёра <span class="help-tip">?<span
+                  class="tip-text"><b>Стиль режиссёра</b> — визуальный почерк знаменитых режиссёров.<br><br><b>Влияет
                     на:</b> общую атмосферу, цветовую палитру, композиционные решения, настроение, характер
                   мизансцены.<br><br><b>Совместные работы:</b><br>• Вильнёв ↔ Дикинс (Prisoners, Sicario, BR2049)<br>•
                   Вильнёв ↔ Фрейзер (Dune 1-2)<br>• Нолан ↔ Хойтема (Interstellar, Dunkirk, Oppenheimer)<br>• Тарантино
@@ -1706,24 +1970,44 @@
             <span class="mode-badge">single</span>
           </div>
           <div class="option-group">
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Denis Villeneuve, vast scale, muted desaturated palette, atmospheric silence, epic compositions" title="">Дени
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Denis Villeneuve, vast scale, muted desaturated palette, atmospheric silence, epic compositions"
+              title="">Дени
               Вильнёв</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Wes Anderson, symmetrical framing, pastel color palette, whimsical miniature aesthetic" title="">Уэс
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Wes Anderson, symmetrical framing, pastel color palette, whimsical miniature aesthetic"
+              title="">Уэс
               Андерсон</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Christopher Nolan, IMAX large format, desaturated blue tones, practical effects, epic scope" title="">Кристофер
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Christopher Nolan, IMAX large format, desaturated blue tones, practical effects, epic scope"
+              title="">Кристофер
               Нолан</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by David Fincher, dark muted palette, precise framing, cold blue-green tones, clinical aesthetic" title="">Дэвид
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by David Fincher, dark muted palette, precise framing, cold blue-green tones, clinical aesthetic"
+              title="">Дэвид
               Финчер</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Ridley Scott, atmospheric haze, painterly compositions, epic historical grandeur" title="">Ридли
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Ridley Scott, atmospheric haze, painterly compositions, epic historical grandeur"
+              title="">Ридли
               Скотт</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Quentin Tarantino, bold saturated colors, dynamic angles, retro grindhouse aesthetic" title="">Тарантино</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Greta Gerwig, warm natural light, soft pastels, intimate handheld framing, nostalgic warmth" title="">Грета
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Quentin Tarantino, bold saturated colors, dynamic angles, retro grindhouse aesthetic"
+              title="">Тарантино</button>
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Greta Gerwig, warm natural light, soft pastels, intimate handheld framing, nostalgic warmth"
+              title="">Грета
               Гервиг</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Jordan Peele, unsettling suburban beauty, vivid colors, horror tension, surreal undertones" title="">Джордан
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Jordan Peele, unsettling suburban beauty, vivid colors, horror tension, surreal undertones"
+              title="">Джордан
               Пил</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Bong Joon-ho, social contrast, sharp compositions, dark humor, class division visual metaphor" title="">Пон
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Bong Joon-ho, social contrast, sharp compositions, dark humor, class division visual metaphor"
+              title="">Пон
               Джун-хо</button>
-            <button class="option-btn" data-group="directorStyle" data-value="directed by Chloe Zhao, golden hour landscapes, natural light, documentary intimacy, vast American West" title="">Хлоя
+            <button class="option-btn" data-group="directorStyle"
+              data-value="directed by Chloe Zhao, golden hour landscapes, natural light, documentary intimacy, vast American West"
+              title="">Хлоя
               Чжао</button>
           </div>
         </div>
@@ -1731,23 +2015,30 @@
         <!-- Typography -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-orange">📝</span> Текст в изображении <span class="help-tip">?<span class="tip-text">Текст прямо в картинке (заголовок, слоган). Лучше всего рендерят Ideogram и DALL·E 3.
+            <h2><span class="icon icon-orange">📝</span> Текст в изображении <span class="help-tip">?<span
+                  class="tip-text">Текст прямо в картинке (заголовок, слоган). Лучше всего рендерят Ideogram и DALL·E 3.
                   В Midjourney текст может быть неразборчивым.</span></span></h2>
           </div>
-          <input type="text" class="input-field" id="textContent" placeholder="Текст для рендера, напр: &quot;SALE 50%&quot;" oninput="handleInput()">
+          <input type="text" class="input-field" id="textContent"
+            placeholder="Текст для рендера, напр: &quot;SALE 50%&quot;" oninput="handleInput()">
 
-          <span class="sub-label">Стиль шрифта <span class="mode-badge multi" style="margin-left:6px">multi</span></span>
+          <span class="sub-label">Стиль шрифта <span class="mode-badge multi"
+              style="margin-left:6px">multi</span></span>
           <div class="option-group">
             <button class="option-btn" data-group="typography" data-value="bold sans-serif typography" title="">Bold
               Sans-Serif</button>
-            <button class="option-btn" data-group="typography" data-value="handwritten text" title="">Рукописный</button>
+            <button class="option-btn" data-group="typography" data-value="handwritten text"
+              title="">Рукописный</button>
             <button class="option-btn" data-group="typography" data-value="elegant serif typography" title="">Elegant
               Serif</button>
             <button class="option-btn" data-group="typography" data-value="neon glowing text" title="">Neon</button>
-            <button class="option-btn" data-group="typography" data-value="retro vintage lettering" title="">Ретро</button>
+            <button class="option-btn" data-group="typography" data-value="retro vintage lettering"
+              title="">Ретро</button>
           </div>
-          <div id="extwaiokist" style="display:none" v="pdbbg" q="70efed52" c="492.0" i="505" u="11.29" s="02092622" sg="svr_02092622-ga_02092622-bai_01252620" d="1" w="false" e="" a="2" m="BMe=" vn="1gtra">
-            <div id="extwaigglbit" style="display:none" v="pdbbg" q="70efed52" c="492.0" i="505" u="11.29" s="02092622" sg="svr_02092622-ga_02092622-bai_01252620" d="1" w="false" e="" a="2" m="BMe="></div>
+          <div id="extwaiokist" style="display:none" v="pdbbg" q="70efed52" c="492.0" i="505" u="11.29" s="02092622"
+            sg="svr_02092622-ga_02092622-bai_01252620" d="1" w="false" e="" a="2" m="BMe=" vn="1gtra">
+            <div id="extwaigglbit" style="display:none" v="pdbbg" q="70efed52" c="492.0" i="505" u="11.29" s="02092622"
+              sg="svr_02092622-ga_02092622-bai_01252620" d="1" w="false" e="" a="2" m="BMe="></div>
           </div>
         </div>
 
@@ -1771,7 +2062,8 @@
         <!-- Special Modes -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-green">✨</span> Специальные режимы <span class="help-tip">?<span class="tip-text"><b>Before/After</b> — генерирует изображение-сравнение «до и после» в формате
+            <h2><span class="icon icon-green">✨</span> Специальные режимы <span class="help-tip">?<span
+                  class="tip-text"><b>Before/After</b> — генерирует изображение-сравнение «до и после» в формате
                   side-by-side. Идеально для демонстрации обработки, реставрации, макияжа.<br><br><b>Seamless
                     Pattern</b> — создаёт бесшовный тайловый паттерн для фонов, текстиля, обоев. Рекомендуется с
                   композицией Flat Lay.<br><br><b>Seed</b> — фиксирует зерно генерации для воспроизводимости результата.
@@ -1794,17 +2086,20 @@
                 SD: seed
                 parameter. Оставьте пустым для случайного.</span></span></span>
           <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
-            <input type="number" class="input-field" id="seedInput" placeholder="Пусто = случайный" style="flex:1;max-width:220px" min="0" max="4294967295" oninput="handleInput()">
+            <input type="number" class="input-field" id="seedInput" placeholder="Пусто = случайный"
+              style="flex:1;max-width:220px" min="0" max="4294967295" oninput="handleInput()">
             <button class="btn btn-ghost" style="min-width:auto;padding:8px 12px;font-size:.82em" id="randomSeedBtn">🎲
               Random</button>
-            <button class="btn btn-ghost" style="min-width:auto;padding:8px 12px;font-size:.82em" id="clearSeedBtn">✕</button>
+            <button class="btn btn-ghost" style="min-width:auto;padding:8px 12px;font-size:.82em"
+              id="clearSeedBtn">✕</button>
           </div>
         </div>
 
         <!-- Engine-Specific Generation Parameters -->
         <div class="section" id="genParamsSection">
           <div class="section-header">
-            <h2><span class="icon icon-purple">⚙️</span> Параметры генерации <span class="help-tip">?<span class="tip-text"><b>Параметры, специфичные для выбранного движка.</b><br><br><b>Midjourney:</b>
+            <h2><span class="icon icon-purple">⚙️</span> Параметры генерации <span class="help-tip">?<span
+                  class="tip-text"><b>Параметры, специфичные для выбранного движка.</b><br><br><b>Midjourney:</b>
                   --stylize (художественность), --chaos (вариативность), --weird (необычность), --style raw (отключает
                   стилизацию MJ), выбор версии.<br><br><b>SD/Flux:</b> CFG Scale (соответствие промпту), Steps (шаги
                   диффузии). Подсказка про веса токенов (word:1.5).<br><br><b>DALL·E 3:</b> vivid/natural стиль,
@@ -1831,23 +2126,28 @@
               </div>
             </div>
 
-            <span class="sub-label">Stylize (--s): <b id="mjStylizeVal">250</b> <span style="font-weight:400;color:var(--text-muted)">— 0=минимум, 1000=максимум
+            <span class="sub-label">Stylize (--s): <b id="mjStylizeVal">250</b> <span
+                style="font-weight:400;color:var(--text-muted)">— 0=минимум, 1000=максимум
                 художественности</span></span>
             <input type="range" min="0" max="1000" value="250" step="10" id="mjStylizeSlider">
 
-            <span class="sub-label" style="margin-top:8px;">Chaos (--chaos): <b id="mjChaosVal">0</b> <span style="font-weight:400;color:var(--text-muted)">— 0=стабильно, 100=максимум случайности</span></span>
+            <span class="sub-label" style="margin-top:8px;">Chaos (--chaos): <b id="mjChaosVal">0</b> <span
+                style="font-weight:400;color:var(--text-muted)">— 0=стабильно, 100=максимум случайности</span></span>
             <input type="range" min="0" max="100" value="0" id="mjChaosSlider">
 
-            <span class="sub-label" style="margin-top:8px;">Weird (--weird): <b id="mjWeirdVal">0</b> <span style="font-weight:400;color:var(--text-muted)">— 0=нормально, 3000=максимум странности</span></span>
+            <span class="sub-label" style="margin-top:8px;">Weird (--weird): <b id="mjWeirdVal">0</b> <span
+                style="font-weight:400;color:var(--text-muted)">— 0=нормально, 3000=максимум странности</span></span>
             <input type="range" min="0" max="3000" value="0" step="50" id="mjWeirdSlider">
           </div>
 
           <!-- SD params -->
           <div id="sdGenParams" style="display: none;">
-            <span class="sub-label">CFG Scale: <b id="sdCfgVal">7</b> <span style="font-weight:400;color:var(--text-muted)">— 1=свобода, 20=строго по промпту</span></span>
+            <span class="sub-label">CFG Scale: <b id="sdCfgVal">7</b> <span
+                style="font-weight:400;color:var(--text-muted)">— 1=свобода, 20=строго по промпту</span></span>
             <input type="range" min="1" max="20" value="7" step="0.5" id="sdCfgSlider">
 
-            <span class="sub-label" style="margin-top:8px;">Steps: <b id="sdStepsVal">25</b> <span style="font-weight:400;color:var(--text-muted)">— больше=качественнее, но медленнее</span></span>
+            <span class="sub-label" style="margin-top:8px;">Steps: <b id="sdStepsVal">25</b> <span
+                style="font-weight:400;color:var(--text-muted)">— больше=качественнее, но медленнее</span></span>
             <input type="range" min="10" max="50" value="25" id="sdStepsSlider">
 
             <div class="hint" style="margin-top:8px;">💡 <b>Веса токенов:</b> используйте
@@ -1866,7 +2166,8 @@
               <button class="option-btn" data-group="fluxModel" data-value="pro" title="">Pro</button>
             </div>
 
-            <span class="sub-label" style="margin-top:8px;">Guidance Scale: <b id="fluxGuidanceVal">3.5</b> <span style="font-weight:400;color:var(--text-muted)">— аналог CFG для Flux</span></span>
+            <span class="sub-label" style="margin-top:8px;">Guidance Scale: <b id="fluxGuidanceVal">3.5</b> <span
+                style="font-weight:400;color:var(--text-muted)">— аналог CFG для Flux</span></span>
             <input type="range" min="1" max="10" value="3.5" step="0.5" id="fluxGuidanceSlider">
 
             <span class="sub-label" style="margin-top:8px;">Steps: <b id="fluxStepsVal">28</b></span>
@@ -1909,13 +2210,16 @@
         <!-- References -->
         <div class="section" id="referencesSection">
           <div class="section-header">
-            <h2><span class="icon icon-orange">🖼️</span> Референсные изображения <span class="help-tip">?<span class="tip-text">До 3 изображений-референсов. Отметьте чекбоксами, что
+            <h2><span class="icon icon-orange">🖼️</span> Референсные изображения <span class="help-tip">?<span
+                  class="tip-text">До 3 изображений-референсов. Отметьте чекбоксами, что
                   извлечь (лицо, палитру, позу,
                   стиль, текстуру). Тип референса определяет, как AI использует картинку.</span></span></h2>
           </div>
-          <p id="refUploadHint" style="font-size:.82em;color:var(--text-muted);margin-bottom:10px;">До 3 изображений. Опишите, что взять из каждого.</p>
+          <p id="refUploadHint" style="font-size:.82em;color:var(--text-muted);margin-bottom:10px;">До 3 изображений.
+            Опишите, что взять из каждого.</p>
 
-          <input class="ref-upload" type="file" id="referenceImages" accept="image/jpeg,image/png,image/gif,image/webp,image/*" multiple="">
+          <input class="ref-upload" type="file" id="referenceImages"
+            accept="image/jpeg,image/png,image/gif,image/webp,image/*" multiple="">
 
           <div id="imagePreviewContainer" style="display: none;">
             <div id="imagePreviews"></div>
@@ -1926,9 +2230,12 @@
             <span class="sub-label">Тип референса</span>
             <div class="option-group">
               <button class="option-btn" data-group="referenceType" data-value="style reference" title="">Стиль</button>
-              <button class="option-btn" data-group="referenceType" data-value="composition reference" title="">Композиция</button>
-              <button class="option-btn" data-group="referenceType" data-value="character reference" title="">Персонаж</button>
-              <button class="option-btn" data-group="referenceType" data-value="color palette reference" title="">Палитра</button>
+              <button class="option-btn" data-group="referenceType" data-value="composition reference"
+                title="">Композиция</button>
+              <button class="option-btn" data-group="referenceType" data-value="character reference"
+                title="">Персонаж</button>
+              <button class="option-btn" data-group="referenceType" data-value="color palette reference"
+                title="">Палитра</button>
             </div>
           </div>
 
@@ -1945,14 +2252,16 @@
         <!-- Quality -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-purple">🏁</span> Качество <span class="help-tip">?<span class="tip-text">Ключевые
+            <h2><span class="icon icon-purple">🏁</span> Качество <span class="help-tip">?<span
+                  class="tip-text">Ключевые
                   слова качества. Ultra (8K) — максимальная детализация. High (4K) —
                   для
                   большинства задач. Standard — быстрая генерация.</span></span></h2>
             <span class="mode-badge">single</span>
           </div>
           <div class="option-group">
-            <button class="option-btn" data-group="quality" data-value="8k, masterpiece, best quality, ultra detailed" title="">Ultra
+            <button class="option-btn" data-group="quality" data-value="8k, masterpiece, best quality, ultra detailed"
+              title="">Ultra
               (8K)</button>
             <button class="option-btn" data-group="quality" data-value="4k, high quality, detailed" title="">High
               (4K)</button>
@@ -1963,23 +2272,34 @@
         <!-- Negative -->
         <div class="section">
           <div class="section-header">
-            <h2><span class="icon icon-red">🚫</span> Негативный промпт <span class="help-tip">?<span class="tip-text">Что
+            <h2><span class="icon icon-red">🚫</span> Негативный промпт <span class="help-tip">?<span
+                  class="tip-text">Что
                   НЕ должно быть в изображении. Работает в SD (отдельное поле) и MJ
                   (--no). DALL·E
                   3 и Flux не поддерживают негативы.</span></span></h2>
           </div>
-          <textarea class="input-field" id="negativePrompt" placeholder="Что исключить из генерации..." oninput="handleInput()"></textarea>
+          <textarea class="input-field" id="negativePrompt" placeholder="Что исключить из генерации..."
+            oninput="handleInput()"></textarea>
           <div class="option-group" style="margin-top:8px;">
-            <button class="option-btn" data-action="addNegative" data-value="blurry, low quality, artifacts, noise">Анти-брак</button>
-            <button class="option-btn" data-action="addNegative" data-value="cartoon, CGI, unrealistic">Анти-CGI</button>
-            <button class="option-btn" data-action="addNegative" data-value="airbrushed, plastic skin, overly smooth">Анти-пластик</button>
-            <button class="option-btn" data-action="addNegative" data-value="extra fingers, deformed hands, bad anatomy, mutated">Анти-анатомия</button>
-            <button class="option-btn" data-action="addNegative" data-value="text, watermark, signature, logo">Анти-текст</button>
-            <button class="option-btn" data-action="addNegative" data-value="cropped, out of frame, cut off">Анти-кроп</button>
+            <button class="option-btn" data-action="addNegative"
+              data-value="blurry, low quality, artifacts, noise">Анти-брак</button>
+            <button class="option-btn" data-action="addNegative"
+              data-value="cartoon, CGI, unrealistic">Анти-CGI</button>
+            <button class="option-btn" data-action="addNegative"
+              data-value="airbrushed, plastic skin, overly smooth">Анти-пластик</button>
+            <button class="option-btn" data-action="addNegative"
+              data-value="extra fingers, deformed hands, bad anatomy, mutated">Анти-анатомия</button>
+            <button class="option-btn" data-action="addNegative"
+              data-value="text, watermark, signature, logo">Анти-текст</button>
+            <button class="option-btn" data-action="addNegative"
+              data-value="cropped, out of frame, cut off">Анти-кроп</button>
           </div>
         </div>
 
-        <div id="conflictWarnings" class="warn-box" style="display: none;">⚠️ <b>Возможные конфликты:</b><br>• Быстрый стилевой пресет + авторский стиль — конфликт. Рекомендуется оставить что-то одно.<br>• Стилевой пресет уже задаёт камеру/оптику — ваш выбор может конфликтовать.<br>• 🔒 Макс. консистентность работает лучше всего с загруженными референсными изображениями.</div>
+        <div id="conflictWarnings" class="warn-box" style="display: none;">⚠️ <b>Возможные конфликты:</b><br>• Быстрый
+          стилевой пресет + авторский стиль — конфликт. Рекомендуется оставить что-то одно.<br>• Стилевой пресет уже
+          задаёт камеру/оптику — ваш выбор может конфликтовать.<br>• 🔒 Макс. консистентность работает лучше всего с
+          загруженными референсными изображениями.</div>
 
       </div>
 
@@ -2006,7 +2326,9 @@
           <div class="section-header">
             <h2><span class="icon icon-purple">🏷️</span> Активные параметры</h2>
           </div>
-          <div class="tag-area" id="activeTags"><span class="tag-item"><span>colorPalette: <b>soft pastel palette, delicate lavender and blush tones, dreamy muted colors</b></span><span class="remove">×</span></span></div>
+          <div class="tag-area" id="activeTags"><span class="tag-item"><span>colorPalette: <b>soft pastel palette,
+                  delicate lavender and blush tones, dreamy muted colors</b></span><span class="remove">×</span></span>
+          </div>
         </div>
 
         <!-- Prompt Output -->
@@ -2021,11 +2343,14 @@
           <div class="format-tabs">
             <button class="format-tab active" data-format="flat" onclick="setPromptFormat(&#39;flat&#39;)">Flat
               (рекомендуется)</button>
-            <button class="format-tab" data-format="structured" onclick="setPromptFormat(&#39;structured&#39;)">Structured</button>
-            <button class="format-tab" data-format="midjourney" onclick="setPromptFormat(&#39;midjourney&#39;)">Midjourney</button>
+            <button class="format-tab" data-format="structured"
+              onclick="setPromptFormat(&#39;structured&#39;)">Structured</button>
+            <button class="format-tab" data-format="midjourney"
+              onclick="setPromptFormat(&#39;midjourney&#39;)">Midjourney</button>
           </div>
 
-          <div class="output-box" id="promptOutput">soft pastel palette, delicate lavender and blush tones, dreamy muted colors</div>
+          <div class="output-box" id="promptOutput">soft pastel palette, delicate lavender and blush tones, dreamy muted
+            colors</div>
 
           <div class="action-row" style="margin-top:12px;">
             <button class="btn btn-accent" id="copyPromptBtn">📋 Копировать</button>
@@ -2042,68 +2367,68 @@
             <h2><span class="icon icon-orange">🧾</span> JSON</h2>
           </div>
           <div class="json-box" id="jsonOutput">{
-  "schema": "vpe-prompt-builder-v2",
-  "model": null,
-  "subject": "",
-  "prompt_flat": "soft pastel palette, delicate lavender and blush tones, dreamy muted colors",
-  "technical": {
-    "aspect_ratio": null,
-    "resolution": null
-  },
-  "parameters": {
-    "purpose": null,
-    "format": null,
-    "camera": {
-      "body": null,
-      "lens": null,
-      "aperture": null,
-      "angle": null,
-      "composition": null
-    },
-    "lighting": {
-      "type": {
-        "primary": null,
-        "accent": null
-      },
-      "time": {
-        "primary": null,
-        "accent": null
-      },
-      "effects": [],
-      "palette": "soft pastel palette, delicate lavender and blush tones, dreamy muted colors"
-    },
-    "materials": {
-      "skin": [],
-      "hair": [],
-      "objects": []
-    },
-    "text": null,
-    "quality": null,
-    "photo_style": null,
-    "cinema_style": null,
-    "director_style": null,
-    "quick_style": null
-  },
-  "modes": {
-    "generateFour": false,
-    "grid3x3": false,
-    "maxConsistency": false,
-    "before_after": false,
-    "seamless_pattern": false
-  },
-  "renderBoost": {
-    "skin": false,
-    "hair": false
-  },
-  "seed": null,
-  "engine_params": null,
-  "references": {
-    "type": null,
-    "weight": 50,
-    "images": []
-  },
-  "negative": ""
-}</div>
+            "schema": "vpe-prompt-builder-v2",
+            "model": null,
+            "subject": "",
+            "prompt_flat": "soft pastel palette, delicate lavender and blush tones, dreamy muted colors",
+            "technical": {
+            "aspect_ratio": null,
+            "resolution": null
+            },
+            "parameters": {
+            "purpose": null,
+            "format": null,
+            "camera": {
+            "body": null,
+            "lens": null,
+            "aperture": null,
+            "angle": null,
+            "composition": null
+            },
+            "lighting": {
+            "type": {
+            "primary": null,
+            "accent": null
+            },
+            "time": {
+            "primary": null,
+            "accent": null
+            },
+            "effects": [],
+            "palette": "soft pastel palette, delicate lavender and blush tones, dreamy muted colors"
+            },
+            "materials": {
+            "skin": [],
+            "hair": [],
+            "objects": []
+            },
+            "text": null,
+            "quality": null,
+            "photo_style": null,
+            "cinema_style": null,
+            "director_style": null,
+            "quick_style": null
+            },
+            "modes": {
+            "generateFour": false,
+            "grid3x3": false,
+            "maxConsistency": false,
+            "before_after": false,
+            "seamless_pattern": false
+            },
+            "renderBoost": {
+            "skin": false,
+            "hair": false
+            },
+            "seed": null,
+            "engine_params": null,
+            "references": {
+            "type": null,
+            "weight": 50,
+            "images": []
+            },
+            "negative": ""
+            }</div>
           <div class="action-row" style="margin-top:8px;">
             <button class="btn btn-ghost" id="copyJsonBtn">📋 Копировать JSON</button>
           </div>
@@ -2263,32 +2588,60 @@
           ,
           { name: "📷 Естественный портрет", values: { aiModel: "flux", cameraBody: "shot on Sony A7R V", aspectRatio: "3:4", purpose: "Photography", format: "photorealistic", lens: "Sony FE 85mm f/1.4 GM", aperture: "f/1.4, shallow depth of field, creamy bokeh", angle: "eye level", composition: "close-up portrait, head and shoulders", quality: "8k, masterpiece, best quality, ultra detailed", lightType: { primary: "soft natural light", accent: "" }, timeOfDay: { primary: "golden hour warm sunlight", accent: "" }, lightFX: ["rim light"], skinDetail: ["visible skin pores, natural grain", "peach fuzz, vellus hair"], hairDetail: ["ultra detailed individual hair strands, each strand visible, photorealistic hair", "flyaway baby hairs, wispy strands, backlit hair glow"], material: [], typography: [], photoStyle: "in the style of Annie Leibovitz, dramatic portrait lighting, rich colors", cinemaStyle: "", directorStyle: "" } },
           { name: "🏙️ Уличный фотореализм", values: { aiModel: "stable-diffusion", cameraBody: "shot on Leica M11", aspectRatio: "3:2", purpose: "Photography", format: "photorealistic", lens: "Leica Summilux-M 50mm f/1.4 ASPH", aperture: "f/2.8, balanced depth of field", angle: "eye level", composition: "medium shot, waist up", quality: "4k, high quality, detailed", lightType: { primary: "soft natural light", accent: "backlighting silhouette" }, timeOfDay: { primary: "overcast diffused light", accent: "" }, lightFX: ["volumetric fog"], skinDetail: ["visible skin pores, natural grain"], hairDetail: [], material: ["wet asphalt reflections", "rough concrete"], typography: [], photoStyle: "in the style of Steve McCurry, vivid saturated colors, documentary", cinemaStyle: "", directorStyle: "" } },
-          { name: "💎 Beauty / Косметика", values: { aiModel: "stable-diffusion", cameraBody: "shot on Hasselblad X2D 100C", aspectRatio: "3:4", purpose: "Advertising campaign", format: "photorealistic", lens: "Canon RF 85mm f/1.2L USM", aperture: "f/1.8, portrait bokeh", angle: "slightly high angle", composition: "extreme close-up, face detail", quality: "8k, masterpiece, best quality, ultra detailed", lightType: { primary: "clamshell lighting, beauty commercial", accent: "softbox beauty light" }, timeOfDay: { primary: "bright midday sun", accent: "" }, lightFX: ["subsurface scattering", "rim light"], skinDetail: ["visible skin pores, natural grain", "peach fuzz, vellus hair", "subtle under-eye texture"], hairDetail: ["ultra detailed individual hair strands, each strand visible, photorealistic hair", "detailed hair highlights, light catching individual strands, hair shine"], material: ["polished chrome"], typography: [], photoStyle: "in the style of Mario Testino, warm golden tones, glossy fashion", cinemaStyle: "", directorStyle: "" } }
+          { name: "💎 Beauty / Косметика", values: { aiModel: "stable-diffusion", cameraBody: "shot on Hasselblad X2D 100C", aspectRatio: "3:4", purpose: "Advertising campaign", format: "photorealistic", lens: "Canon RF 85mm f/1.2L USM", aperture: "f/1.8, portrait bokeh", angle: "slightly high angle", composition: "extreme close-up, face detail", quality: "8k, masterpiece, best quality, ultra detailed", lightType: { primary: "clamshell lighting, beauty commercial", accent: "softbox beauty light" }, timeOfDay: { primary: "bright midday sun", accent: "" }, lightFX: ["subsurface scattering", "rim light"], skinDetail: ["visible skin pores, natural grain", "peach fuzz, vellus hair", "subtle under-eye texture"], hairDetail: ["ultra detailed individual hair strands, each strand visible, photorealistic hair", "detailed hair highlights, light catching individual strands, hair shine"], material: ["polished chrome"], typography: [], photoStyle: "in the style of Mario Testino, warm golden tones, glossy fashion", cinemaStyle: "", directorStyle: "" } },
+
         ];
 
         // =============================================
         // QUICK STYLE PRESETS
         // =============================================
         const QUICK_STYLES = {
-          "a24": "Cinematic shot shot on Arri Alexa Mini with vintage Canon K35 lenses. Lighting: Low-key, underexposed lighting setup. Deep, crushed shadows with very little fill light. Practical lighting sources only (lamps, candles) creating a sense of isolation. Color Grading: Desaturated, muted palette with unsettling warm undertones (yellow/green tint) in the highlights and cold shadows. Texture: Visible ISO 1600 film grain, soft lens edges, slight chromatic aberration. Atmosphere: Claustrophobic, raw, psychological tension. High contrast but naturalistic.",
-          "pixar": "3D render in Pixar RenderMan engine style. Lighting: Global Illumination with soft, bounced light. Bright, high-key setup. Strong rim lighting (backlight) to separate subjects from the background. Materials: Physically based rendering (PBR) with heavy use of Subsurface Scattering (SSS) on skin and soft objects to create a translucent, waxy glow. Tactile micro-textures (fuzz on fabric, imperfections on surfaces). Color: Highly saturated, vibrant, and warm color palette. Camera: Simulated 50mm portrait lens with smooth, creamy bokeh background blur.",
-          "wes-anderson": "Cinematic shot with perfect central symmetry and orthographic (flat) perspective. Lighting: Flat, shadowless High-Key lighting (softbox style). Everything is evenly illuminated to look like a diorama or stage set. Color Palette: Strictly controlled pastel color scheme: powdery pinks, mint greens, mustard yellows, and sky blues. Matte finish, no glossy reflections. Camera: Deep depth of field (f/16) — everything from foreground to background is in sharp focus. Aesthetic: Whimsical, meticulous, dollhouse-like precision. 90-degree shooting angles only.",
-          "marvel-mcu": "Blockbuster cinematic shot on IMAX digital cameras. Lighting: High-contrast, dynamic lighting with multiple artificial sources. Lens flares (anamorphic horizontal streaks). Strong backlighting. Color Grading: Teal and Orange blockbuster look (cyan shadows, vibrant orange skin tones). High saturation and digital sharpness. Texture: Clean, noise-free digital image (low ISO). VFX: Integration of particle effects, energy glows, and hyper-realistic CGI elements. 2.39:1 widescreen aspect ratio.",
-          "studio-ghibli": "Traditional 2D hand-drawn animation style. Medium: Gouache and watercolor background art with visible brushstrokes for nature elements (clouds, grass, water). Line Art: Delicate, thin ink lines for characters (Cel-shaded). Color: Rich, verdant natural palette (deep emerald greens, azure blues, earthy browns). High saturation but naturalistic tones. Atmosphere: Nostalgic, peaceful, airy. 'Ghibli Clouds' (cumulonimbus) are prominent. No 3D effects, pure 2D aesthetic.",
-          "spider-verse": "Stylized 2.5D animation combining 3D geometry with 2D comic book shading. Texture: Visible Ben-Day dots (halftone patterns) for shadows and gradients. Cross-hatching ink lines for texture. Optical Effects: Intentionally shifted RGB channels (Chromatic Aberration) to simulate printing errors and depth. Lighting: Neon, phosphorescent lighting against deep blacks. Frame Rate: Simulation of stop-motion aesthetic (stepped animation). Vibrant, graffiti-inspired colors.",
-          "bbc-period": "Cinematic shot on Large Format sensor with soft vintage glass. Lighting: Exclusively natural window light (Vermeer style) or practical candlelight. Soft, diffused shadows, no harsh artificial lights. Color: Muted, earthy, organic tones (cream, moss, burgundy, wood). Low contrast, preserving details in highlights. Texture: Very realistic material rendering (silk, wool, stone). Soft optical diffusion (Pro-Mist filter effect) to create a romantic, hazy atmosphere. Depth: Shallow depth of field to isolate subjects.",
-          "noir-batman": "Cinematic Neo-Noir aesthetic. Lighting: Extremely Low-Key. 'Chiaroscuro' lighting with harsh sodium-vapor streetlights (orange/amber) and neon signs cutting through darkness. Weather: Heavy rain, wet surfaces reflecting lights (specular highlights on pavement). Lens: Anamorphic lens with distinct oval bokeh and shallow focus. Use of 'split diopter' effect for tension. Color: High contrast Black & White OR desaturated palette with deep blacks and piercing red/amber accents. Grimy, dirty texture.",
-          "top-gun": "Cinematic action photography shot during Golden Hour. Lighting: Intense, warm backlighting from the sun. Silhouetted shapes against a bright sky. Heavy lens flares. Atmosphere: Heat haze shimmering distortion in the distance. Sweat and oil sheen on skin (specularity). Camera: Long Telephoto lens (200mm+) compressing the background and foreground. Color: Deep, saturated sunset oranges, golds, and twilight blues. High contrast and clarity.",
-          "80s-fantasy": "Vintage 1980s dark fantasy film still. Medium: Practical effects aesthetic (animatronics, puppets, matte paintings). No modern CGI look. Lighting: Theatrical, colored gel lighting (deep blues, magentas, purples) mixed with fog. Atmosphere: Thick volumetric fog and floating dust particles ('magic glitter'). Texture: Heavy film grain, soft focus, slight VHS color bleeding and degradation. Background: Painted matte background aesthetic giving a sense of artificial depth.",
-          "hbo-prestige": "Cinematic still shot on Arri Alexa 35 with Panavision Primo lenses. Lighting: Moody Chiaroscuro lighting setup. Low-key exposure preserving deep, textured blacks. Lighting is strictly 'motivated' (sources appear logical within the scene, e.g., window light or lamp), avoiding the 'sitcom flat' look. Color Grading: Muted, desaturated palette with a subtle Teal and Orange push in the mid-tones. Cold shadows, naturalistic skin tones. Texture: Visible ISO 800 film grain added for organic texture. High-frequency detail on skin (pores, imperfections). Optical Effects: Soft focus falloff, slight halation around highlights. 16:9 or 2:1 aspect ratio.",
-          "netflix-4k": "High-budget cinematic shot on RED V-Raptor or Sony Venice 2 (Netflix Approved Cameras). Resolution: Pristine 4K/8K digital capture with zero film grain (denoised look). Extreme sharpness and clarity. Lens: Anamorphic lenses creating characteristic oval bokeh and horizontal lens flares. Lighting: High Dynamic Range (HDR) mastering style. Bright, punchy highlights and detailed shadows. Glossy, stylized lighting with strong color separation (e.g., neon blue vs. warm tungsten). Color: Rich, saturated colors, modern blockbuster color science. Composition: Wide aspect ratio (2.39:1). Center-weighted or rule-of-thirds composition aimed at high-end streaming compression."
+          "true-detective": "True Detective HBO noir cinematography aesthetic. LIGHTING: harsh Louisiana sun creating extreme contrast, or dim atmospheric interior lighting with practical sources (desk lamps, neon signs), oppressive heat haze visual quality, golden hour magic light with long shadows, smoky atmospheric diffusion. COLOR GRADING: heavily desaturated with sickly greens and murky browns, swampy atmospheric color palette, crushed blacks and blown highlights for noir effect, melancholic despondent mood, teal shadows with amber highlights, low saturation high contrast. TECHNICAL: extreme shallow depth of field (f/1.4 feel), anamorphic lens flares and aberrations, 35mm film grain texture, wide desolate landscape compositions alternating with claustrophobic close-ups, natural vignetting. ATMOSPHERE: oppressive humidity, existential dread, Southern Gothic decay, time and mortality themes. QUALITY: photorealistic, 8K resolution, Cary Fukunaga directorial style, award-winning cinematography, prestige crime drama aesthetic.",
+
+          "game-of-thrones": "Game of Thrones HBO epic fantasy cinematography. LIGHTING: dramatic natural lighting with overcast skies, torch-lit and candlelit interiors with warm flickering practical lights, cold Northern daylight with diffused sun, dramatic fire and shadow interplay, motivated medieval lighting sources only. COLOR GRADING: desaturated medieval color palette with muted earth tones, cold blue-grey exteriors, warm amber interiors, gritty realistic texture, low saturation to convey harsh realism, teal and orange separation for dramatic scenes. TECHNICAL: sweeping wide establishing shots of landscapes and castles, intimate medium close-ups for dialogue, shallow to medium depth of field (f/2.8-f/5.6), IMAX camera quality for battle sequences, natural film grain, handheld camera for battle chaos. ATMOSPHERE: medieval fantasy realism, political intrigue gravitas, epic scale with intimate character moments, harsh unforgiving world, winter is coming mood. QUALITY: photorealistic, 8K resolution, prestige fantasy television, award-winning cinematography, theatrical production value, gritty realistic medieval aesthetic.",
+
+          "the-last-of-us": "The Last of Us HBO post-apocalyptic cinematography aesthetic. LIGHTING: soft diffused overcast natural light, nature reclaiming urban environments with dappled sunlight through overgrown vegetation, golden hour warmth for emotional moments, cold blue-grey for tension and danger, practical flashlight and lantern sources in dark interiors, atmospheric dust particles in light beams. COLOR GRADING: desaturated with selective warm color pops (rust, autumn leaves, golden light), muted greens of overgrown nature, cold concrete greys, earthy browns and ochres, melancholic yet beautiful color palette, teal shadows with amber highlights in key scenes. TECHNICAL: intimate character-focused cinematography, shallow depth of field for emotional beats (f/2-f/2.8), medium depth for environmental storytelling (f/5.6), natural handheld camera movement, subtle film grain texture, wide shots emphasizing isolation and scale of abandoned cities. ATMOSPHERE: post-pandemic desolation, nature reclaiming civilization, hope amid despair, survival drama, emotional father-daughter relationship undertones, quiet apocalypse beauty, melancholic yet hopeful. QUALITY: photorealistic, 8K resolution, prestige video game adaptation, award-winning cinematography, theatrical production quality, naturalistic performances.",
+
+          "stranger-things": "Stranger Things Netflix 1980s nostalgia cinematography aesthetic. LIGHTING: practical 1980s sources (neon signs, flashlights, Christmas lights, arcade machines), moody atmospheric fog with colored gel lighting, dramatic red and blue police light flashes, warm suburban home interiors with table lamps, eerie Upside Down scenes with cold flickering lights, golden hour suburban Americana. COLOR GRADING: vibrant saturated 1980s color palette with heavy red and teal contrast, neon pink and electric blue accents, warm amber suburban scenes, cold desaturated Upside Down sequences, nostalgic film stock emulation, Spielberg-inspired warm family moments contrasting with horror elements. TECHNICAL: anamorphic lens flares and aberrations, shallow depth of field for character focus (f/2-f/2.8), Steadicam smooth tracking shots, wide establishing shots of suburban Indiana, intimate close-ups during emotional beats, subtle film grain texture, practical special effects aesthetic. ATMOSPHERE: 1980s nostalgia, supernatural mystery, coming-of-age adventure, Spielberg meets Stephen King, suburban horror, friendship and loyalty themes, synth-wave retro vibes. QUALITY: photorealistic, 8K resolution, Netflix prestige series, Duffer Brothers visual style, award-winning cinematography, theatrical production value, 1980s period accuracy.",
+
+          "the-crown": "The Crown Netflix prestige royal drama cinematography aesthetic. LIGHTING: soft diffused natural window light in palace interiors, elegant chandelier and sconce lighting, overcast British daylight, sophisticated three-point studio lighting for formal portraits, natural outdoor light for countryside estates, subtle rim lighting for royal gravitas. COLOR GRADING: rich saturated jewel tones (deep reds, royal blues, emerald greens), warm golden interiors with mahogany and brass, muted British countryside greens and greys, sophisticated color palette, period-accurate color reproduction, elegant restrained grading. TECHNICAL: static composed camera work emphasizing formality and tradition, slow deliberate camera movements, symmetrical framing for power and authority, medium depth of field (f/4-f/5.6), 35mm and 50mm lens aesthetic, classical composition following rule of thirds and golden ratio, pristine clean image quality. ATMOSPHERE: British royal elegance, political intrigue, duty versus desire, historical gravitas, restrained emotion, palace formality, period drama sophistication, understated luxury. QUALITY: photorealistic, 8K resolution, Netflix prestige historical drama, award-winning cinematography, theatrical production quality, meticulous period detail, BBC drama aesthetic elevated.",
+
+          "wednesday": "Wednesday Netflix gothic dark academia cinematography aesthetic. LIGHTING: moody overcast natural light, gothic architecture with dramatic shadows, candlelit and lantern-lit interiors, moonlight through stained glass windows, cold blue-grey daylight, dramatic chiaroscuro contrast, Tim Burton-inspired expressionistic lighting, fog and mist atmospheric effects. COLOR GRADING: heavily desaturated with deep blacks and cool greys, selective color pops (blood red, poison purple, toxic green), monochromatic gothic palette, cold blue undertones, high contrast with crushed blacks, Burton-esque dark whimsy color treatment. TECHNICAL: Dutch angles and off-kilter framing for unease, symmetrical centered compositions for gothic formality, wide shots emphasizing gothic architecture, intimate close-ups with deadpan expressions, shallow to medium depth of field (f/2.8-f/4), Tim Burton visual language, stylized yet grounded aesthetic. ATMOSPHERE: gothic dark comedy, macabre humor, teenage outsider angst, supernatural mystery, Addams Family legacy, dark academia aesthetic, deadpan wit, Burton-meets-teen-drama. QUALITY: photorealistic with stylized gothic elements, 8K resolution, Netflix prestige teen series, Tim Burton directorial style, award-winning production design, theatrical gothic aesthetic, darkly whimsical.",
+
+          "blade-runner-2049": "Blade Runner 2049 neo-noir cyberpunk cinematography, Roger Deakins masterwork. LIGHTING: dramatic volumetric fog with laser light beams, monumental scale lighting, orange sodium vapor dystopian exteriors, cool blue-grey rain-soaked scenes, warm amber interior glow, god rays through industrial haze, practical neon signs and holographic advertisements. COLOR GRADING: bold saturated orange and teal separation, monochromatic sequences (orange desert, purple Vegas), deep blacks with vibrant color accents, cyberpunk neon palette, desaturated with selective color pops, cinematic color contrast pushed to maximum. TECHNICAL: ultra-wide establishing shots emphasizing scale and isolation, symmetrical centered compositions, extreme shallow depth of field (f/1.4), anamorphic lens flares, slow deliberate camera movements, IMAX quality, pristine sharp image. ATMOSPHERE: dystopian future noir, existential loneliness, monumental architecture, technological decay, philosophical sci-fi, visual poetry. QUALITY: photorealistic, 8K IMAX resolution, Academy Award-winning cinematography, Roger Deakins visual mastery.",
+
+          "grand-budapest-hotel": "The Grand Budapest Hotel Wes Anderson symmetrical whimsical cinematography. LIGHTING: soft even studio lighting, pastel-friendly neutral temperature, theatrical stage lighting aesthetic, natural window light in symmetrical compositions, warm interior hotel lighting, bright clean exterior daylight. COLOR GRADING: vibrant pastel color palette (pink, purple, mint green, coral, baby blue), highly saturated candy colors, meticulously color-coordinated production design, distinct color schemes for different time periods, storybook aesthetic. TECHNICAL: perfectly centered symmetrical compositions, flat frontal camera angles, whip pans and snap zooms, miniature model shots, stop-motion animation sequences, planimetric framing, dollhouse aesthetic. ATMOSPHERE: whimsical European nostalgia, theatrical storybook charm, meticulous detail, quirky sophistication, fairy tale elegance. QUALITY: photorealistic with stylized production design, 8K resolution, Academy Award-winning production design, Wes Anderson signature visual style.",
+
+          "in-the-mood-for-love": "In the Mood for Love Wong Kar-wai romantic melancholy cinematography, Christopher Doyle color mastery. LIGHTING: warm tungsten practical lighting, neon signs through rain-soaked windows, moody low-key lighting, colored gels (red, amber, teal), intimate close-up lighting, shadows and silhouettes, Hong Kong night ambiance. COLOR GRADING: rich saturated reds and warm ambers, teal and orange romantic contrast, lush vibrant colors, nostalgic 1960s Hong Kong palette, deep shadows with glowing highlights, sensual color temperature. TECHNICAL: slow motion romantic sequences, tight intimate framing through doorways and windows, voyeuristic camera placement, shallow depth of field (f/1.4-f/2), handheld intimate camera work, vertical compositions, step-printing slow motion. ATMOSPHERE: forbidden romance, unspoken longing, 1960s Hong Kong nostalgia, sensual restraint, melancholic beauty, time and memory. QUALITY: photorealistic, 8K restoration quality, Cannes Film Festival award-winning cinematography, Wong Kar-wai poetic visual language.",
+
+          "mad-max-fury-road": "Mad Max Fury Road post-apocalyptic action cinematography, John Seale visual intensity. LIGHTING: harsh Australian desert sun, extreme contrast daylight, practical fire and explosion lighting, dust storm diffusion, golden hour chase sequences, moonlight night scenes with cool blue tones, flare gun and flame lighting. COLOR GRADING: teal and orange pushed to extreme, desaturated desert with vibrant sky blues, warm sand tones contrasting cool shadows, day-for-night blue sequences, high contrast high saturation, comic book color intensity. TECHNICAL: high-speed action photography, wide-angle dynamic compositions, practical stunts and effects, minimal CGI aesthetic, fast cutting with clear spatial geography, multiple camera angles for action, IMAX sequences. ATMOSPHERE: post-apocalyptic survival, kinetic energy, practical action spectacle, wasteland beauty, relentless momentum, visual storytelling without dialogue. QUALITY: photorealistic practical effects, 8K resolution, Academy Award-winning cinematography and editing, visceral action cinema.",
+
+          "the-revenant": "The Revenant natural light wilderness cinematography, Emmanuel Lubezki three-time Oscar winner. LIGHTING: exclusively natural available light, golden hour magic hour sequences, overcast diffused daylight, campfire and torch practical lighting, harsh midday sun through forest canopy, blue hour twilight, moonlight night scenes, no artificial lighting. COLOR GRADING: desaturated natural earth tones, cold blue-grey winter palette, warm firelight contrast, muted greens and browns, realistic color reproduction, subtle grading preserving natural light quality. TECHNICAL: long continuous takes with invisible cuts, immersive Steadicam and handheld work, wide-angle lenses capturing environment, shallow depth of field for intimacy (f/2-f/2.8), natural lens flares, IMAX sequences. ATMOSPHERE: brutal survival, man versus nature, 1820s American frontier, visceral realism, spiritual journey, elemental forces. QUALITY: photorealistic, 8K resolution, Academy Award-winning cinematography, natural light mastery, immersive realism.",
+
+          "hero": "Hero Zhang Yimou color-coded wuxia cinematography, Christopher Doyle visual poetry. LIGHTING: soft diffused natural light, dramatic backlight for martial arts silhouettes, colored gel lighting matching story segments, golden hour desert sequences, overcast grey skies, lantern and candle interiors, rain and water reflections. COLOR GRADING: bold monochromatic color schemes per story version (red, blue, green, white, black), highly saturated single-color dominance, color as narrative device, vibrant silk costumes against matching environments, painterly color composition. TECHNICAL: sweeping crane shots over landscapes, slow-motion martial arts choreography, wire-work enhanced movements, symmetrical compositions, wide establishing shots, balletic camera movements. ATMOSPHERE: Chinese wuxia poetry, color as storytelling, martial arts ballet, philosophical conflict, visual opera, ancient China grandeur. QUALITY: photorealistic with stylized color, 8K resolution, visually groundbreaking cinematography, painterly aesthetic.",
+
+          "la-la-land": "La La Land modern Hollywood musical cinematography, Linus Sandgren Technicolor homage. LIGHTING: golden hour Los Angeles magic light, vibrant sunset colors, theatrical stage lighting for musical numbers, romantic twilight blue hour, warm practical streetlights, studio musical lighting aesthetic, colorful gel lighting. COLOR GRADING: vibrant saturated primary colors (red, blue, yellow, purple), Technicolor-inspired bold palette, romantic warm tones, dreamy pastel sequences, high saturation celebrating classic musicals, teal and magenta Los Angeles nights. TECHNICAL: sweeping Steadicam musical choreography, long continuous takes for dance numbers, crane and dolly moves, classical Hollywood camera language, planetarium sequence with starry visuals. ATMOSPHERE: romantic Los Angeles dreams, jazz and ambition, classic Hollywood musical revival, bittersweet romance, city of stars magic, nostalgic optimism. QUALITY: photorealistic, 8K resolution, Academy Award-winning cinematography, modern musical masterpiece.",
+
+          "the-fall": "The Fall Tarsem Singh surreal visual maximalism cinematography, Colin Watkinson painterly compositions. LIGHTING: dramatic natural light in exotic locations, golden hour magic across 28 countries, theatrical color gel lighting, stained glass window light, desert sun and palace interiors, fantasy dreamscape lighting. COLOR GRADING: ultra-saturated jewel tones, vibrant reds blues golds, painterly color composition, surreal color combinations, Baroque painting aesthetic, maximum color intensity, fantasy storybook palette. TECHNICAL: symmetrical centered compositions, wide establishing shots of breathtaking locations, slow deliberate camera movements, shallow depth of field isolating subjects, practical locations worldwide, minimal CGI. ATMOSPHERE: fever dream fantasy, storybook surrealism, visual poetry, imagination versus reality, baroque maximalism, fairy tale darkness. QUALITY: photorealistic with surreal production design, 8K resolution, most visually ambitious independent film, painterly cinematography.",
+
+          "1917": "1917 one-shot WWI cinematography, Roger Deakins immersive realism. LIGHTING: overcast grey WWI daylight, muddy trench natural light, dramatic flare-lit night town sequence (orange fire glow), golden hour no-man's-land, practical explosion and fire lighting, moonlight and starlight night scenes. COLOR GRADING: desaturated war-torn palette, muddy browns and greys, cold blue overcast skies, dramatic orange firelight sequence contrasting cool night, muted greens of French countryside, realistic period color. TECHNICAL: seamless invisible cuts creating one continuous shot illusion, immersive Steadicam and handheld work, choreographed camera movements with actors, real-time storytelling, practical effects emphasis. ATMOSPHERE: WWI trench warfare immediacy, real-time tension, immersive you-are-there realism, relentless forward momentum, visceral war experience. QUALITY: photorealistic, 8K resolution, Academy Award-winning cinematography, technical filmmaking mastery, immersive realism.",
+
+          "amelie": "Amélie Jean-Pierre Jeunet whimsical Parisian cinematography, Bruno Delbonnel painterly warmth. LIGHTING: warm golden Parisian light, cozy interior café and apartment lighting, soft diffused natural window light, warm tungsten practical sources, romantic evening streetlights, nostalgic warm glow throughout. COLOR GRADING: vibrant warm palette dominated by reds yellows greens, desaturated blues creating teal-orange separation, painterly color grading, nostalgic postcard Paris aesthetic, high saturation in warm tones, storybook color treatment. TECHNICAL: whimsical camera movements and snap zooms, centered symmetrical compositions, shallow depth of field (f/2), creative transitions and visual effects, playful camera angles, miniature tilt-shift sequences. ATMOSPHERE: whimsical Parisian romance, magical realism, quirky charm, nostalgic warmth, fairy tale Paris, innocent wonder, visual poetry. QUALITY: photorealistic with stylized color, 8K resolution, César Award-winning cinematography, iconic French cinema aesthetic.",
+
+          "shinkai-vibes": "Makoto Shinkai anime aesthetic. LIGHTING: brilliant lens flares, god rays piercing through clouds, hyper-realistic lighting, golden hour magic, bioluminescent night scenes, star-filled skies, vibrant city lights. COLOR GRADING: hyper-vibrant saturated colors, azure blue skies, emerald greens, impossible sunsets with purple and pink gradients, high contrast but airy feel. TECHNICAL: wide angle establishing shots of cityscapes and nature, extreme attention to detail in background art, photorealistic clouds and water, crisp sharp lines, digital animation perfection. ATMOSPHERE: emotional longing, separation, bittersweet romance, urban fantasy, everyday magic, breathtaking beauty. QUALITY: 8K anime wallpaper, Comix Wave Films production quality, masterpiece animation.",
+
+          "90s-anime": "Retro 90s cel animation aesthetic. LIGHTING: flat cel shading, hard shadows, dramatic rim lighting, limited lighting complexity typical of hand-drawn era. COLOR GRADING: slightly muted or pastel palette, specific 90s broadcast colors, film grain simulation, VHS noise or slight chromatic aberration, analog warmth. TECHNICAL: hand-drawn line art look, traditional ink and paint style, limited frame rate feel (on threes), static backgrounds with moving characters. ATMOSPHERE: nostalgic, classic anime, cyberpunk or mecha vibes, magical girl transformations, lo-fi aesthetic. QUALITY: high quality scan of vintage cel, DVD box set art, Cowboy Bebop or Evangelion visual style.",
+
+          "dark-fantasy-anime": "Dark Epic Fantasy anime aesthetic (Berserk/Elden Ring style). LIGHTING: dramatic chiaroscuro, heavy shadows, torchlight and firelight, cold moonlight, ominous atmospheric fog, rim lighting on armor. COLOR GRADING: desaturated gritty palette, blacks, greys, blood reds, cold blues, muted earth tones, high contrast. TECHNICAL: detailed line work, cross-hatching textures, heavy ink lines, dynamic action composition, extreme angles. ATMOSPHERE: dread, epic struggle, cosmic horror, medieval grit, violence and beauty, supernatural power. QUALITY: 8K resolution, MAPPA or Ufotable high budget production, theatrical feature quality.",
+
+          "ghibli-style": "Studio Ghibli Hayao Miyazaki hand-painted aesthetic. LIGHTING: soft natural sun-drenched lighting, dappled forest light, puffy cumulus cloud shadows, warm inviting interior lamplight. COLOR GRADING: naturalistic watercolor palette, lush greens, azure skies, earthy browns, vibrant but natural colors, gouache painted backgrounds. TECHNICAL: hand-painted background art style, soft character outlines, fluid motion emphasis (flying sequences), attention to nature details (grass blowing, water flowing). ATMOSPHERE: childhood wonder, nature worship, pacifism, magical realism, nostalgia, cozy comfort, environmental beauty. QUALITY: 8K resolution, theatrical animation masterpiece, hand-drawn production value."
         };
 
         // =============================================
         // STATE
         // =============================================
         const state = {
-          aiModel: "", cameraBody: "", aspectRatio: "", resolution: "", purpose: "", format: "", photoStyle: "", cinemaStyle: "", directorStyle: "",
+          aiModel: "", cameraBody: "", aspectRatio: "", resolution: "", purpose: "", format: "", photoStyle: "", cinemaStyle: "", directorStyle: "", filmStock: "",
           lens: "", aperture: "", angle: "", composition: "", quality: "",
           lightType: { primary: "", accent: "" },
           timeOfDay: { primary: "", accent: "" },
@@ -2387,15 +2740,14 @@
   }
 }`;
 
-        const MAX_CONSISTENCY_PREFIX = `CHARACTER CONSISTENCY PROTOCOL — STRICT IDENTITY LOCK:
-Maintain absolute visual consistency of the character across all generated images. The following identity attributes are LOCKED and must NOT change between frames:
-- FACE: Exact facial structure, bone structure, nose shape, lip shape, eye shape, eye color, eyebrow thickness and arch, jaw line, chin shape, ear shape. No deviation.
-- HAIR: Exact hairstyle, hair color, hair length, hair texture, parting position, hairline shape. No deviation.
-- SKIN: Exact skin tone, skin texture, freckles/moles/scars placement, complexion. No deviation.
-- BODY: Exact body proportions, height impression, build, posture tendency. No deviation.
-- CLOTHING: Exact outfit details, fabric texture, color, fit, accessories, jewelry, if described.
-- DISTINGUISHING MARKS: All unique features (tattoos, scars, birthmarks, piercings) must appear in identical positions.
-RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for identity. (2) The character must be recognizable as the SAME PERSON in every single output. (3) Only change: camera angle, pose, expression, lighting, environment. (4) If in doubt, prioritize facial identity over stylistic flourish. (5) Treat this as a film continuity requirement — any identity drift is unacceptable.
+        const MAX_CONSISTENCY_PREFIX = `FACE ID LOCKED from reference. Exact facial match required - all features preserved.
+"CONSISTENCY PROTOCOL": "100% facial feature".
+"preservation from reference image".
+"Preserve skin texture and micro-details".
+"FACE LOCKED": "NON-NEGOTIABLE"
+"FACE CONSISTENCY": "100% - All facial features must remain IDENTICAL to locked reference CHARACTER INTEGRITY: Maintain key features across all variations ZERO DEVIATION from specified eye color, hair color, face structure, unique identifiers
+"Keep the facial features of the person in the uploaded image exactly consistent. Do not modify their identity. Maintain 70% identical bone structure, skin tone, and facial imperfections (moles, scars)."
+--cw 100
 `;
 
         // =============================================
@@ -3050,8 +3402,15 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
         // BUILD PROMPT — FLAT (universal, recommended)
         // =============================================
         function buildFlatPrompt() {
+          const headers = [];
           const parts = [];
 
+          // 1. Headers (Metadata)
+          // Aspect ratio & resolution — prepend as metadata tags
+          if (state.aspectRatio) headers.push(`[Aspect: ${state.aspectRatio}]`);
+          if (state.resolution) headers.push(`[Resolution: ${state.resolution}]`);
+
+          // 2. Styles & Parameters
           // Skip quality keywords for MJ (uses --q parameter instead)
           if (state.quality && state.aiModel !== "midjourney") parts.push(state.quality);
           if (state.purpose) parts.push(state.purpose);
@@ -3060,12 +3419,14 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
             const skipPhotoreal = state.format === "photorealistic" && ["Photography", "Cinematic Still", "Product Photography"].includes(state.purpose);
             if (!skipPhotoreal) parts.push(state.format);
           }
-          if (state.mainSubject) parts.push(state.mainSubject.trim());
+
+          // NOTE: Main Subject is handled separately below
 
           // Camera
           if (state.cameraBody) parts.push(state.cameraBody);
           if (state.lens) parts.push(state.lens);
           if (state.aperture) parts.push(state.aperture);
+          if (state.filmStock) parts.push(state.filmStock);
           if (state.angle) parts.push(state.angle);
           if (state.composition) parts.push(state.composition);
 
@@ -3104,7 +3465,20 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           if (state.seamlessPattern) parts.push("seamless tileable pattern");
           // Seed is passed as parameter, not in prompt text
 
-          let prompt = parts.filter(Boolean).join(", ");
+          // 3. Construct Final String
+          let finalPrompt = "";
+
+          // Add Headers
+          if (headers.length > 0) finalPrompt += headers.join(", ") + "\n";
+
+          // Add Subject (on new line with prefix)
+          if (state.mainSubject && state.mainSubject.trim()) {
+            finalPrompt += `subject: ${state.mainSubject.trim()}\n`;
+          }
+
+          // Add Modifiers
+          const modifiers = parts.filter(Boolean).join(", ");
+          if (modifiers) finalPrompt += modifiers;
 
           // References note (not part of actual prompt, but informational)
           let refs = "";
@@ -3117,7 +3491,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
             });
           }
 
-          return (prompt + refs).trim() || "Select parameters on the left...";
+          return (finalPrompt + refs).trim() || "Select parameters on the left...";
         }
 
         // =============================================
@@ -3234,6 +3608,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
             const fMatch = state.aperture.match(/f\/[\d.]+/);
             if (fMatch) desc.push(fMatch[0]);
           }
+          if (state.filmStock) desc.push(state.filmStock);
           if (state.angle) desc.push(state.angle);
           if (state.composition) desc.push(state.composition);
 
@@ -3338,6 +3713,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
               photo_style: state.photoStyle || null,
               cinema_style: state.cinemaStyle || null,
               director_style: state.directorStyle || null,
+              film_stock: state.filmStock || null,
               quick_style: state.quickStyle || null
             },
             modes: { generateFour: state.generateFourMode, grid3x3: state.grid3x3Mode, maxConsistency: state.maxConsistency, before_after: state.beforeAfter, seamless_pattern: state.seamlessPattern },
@@ -3379,7 +3755,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
           };
 
           // Singles
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "colorPalette", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "quickStyle"].forEach(k => {
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "colorPalette", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle"].forEach(k => {
             if (state[k]) {
               addTag(k, state[k], "", () => {
                 state[k] = "";
@@ -3441,7 +3817,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
         // =============================================
         function countParams() {
           let c = 0;
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "quickStyle"].forEach(k => { if (state[k]) c++; });
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle"].forEach(k => { if (state[k]) c++; });
           ["lightFX", "skinDetail", "hairDetail", "material", "typography"].forEach(k => { if ((state[k] || []).length) c++; });
           if (state.colorPalette) c++;
           if (state.lightType.primary) c++;
@@ -3646,6 +4022,11 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
             b.disabled = false;
             b.classList.remove("conflict-disabled");
             b.title = "";
+          });
+
+          // Reset disabled-section overlay from previous Quick Style evaluation
+          document.querySelectorAll(".left-panel > .section.disabled-section").forEach(sec => {
+            sec.classList.remove("disabled-section");
           });
 
           // Helper: disable all buttons in a group
@@ -3965,58 +4346,42 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
             });
           }
 
-          // RULE 18: Quick Style — deep conflict resolution
-          // Quick Style presets define complete visual language: camera, lens, lighting, color, texture
-          // When selected, block all options that the preset already specifies
+          // RULE 18: Quick Style — BLANKET DISABLE
+          // Quick Style presets define complete visual language (camera, lens, lighting, color, texture).
+          // When ANY preset is selected, ALL menus are disabled except: Aspect Ratio, Resolution, AI Model, and Quick Style itself.
           if (state.quickStyle) {
-            const qs = state.quickStyle;
-            const reason = "Стилевой пресет уже определяет этот параметр";
+            const reason = "Стилевой пресет определяет все параметры. Снимите пресет для ручной настройки.";
 
-            // All presets conflict with author styles (always)
-            disableGroup("photoStyle", reason);
-            disableGroup("cinemaStyle", reason);
-            disableGroup("directorStyle", reason);
+            // Disable ALL parameter groups except aspectRatio, resolution, aiModel, quickStyle
+            const blanketDisableGroups = [
+              "purpose", "format", "quality", "cameraBody", "lens", "aperture",
+              "angle", "composition", "lightType", "timeOfDay", "lightFX",
+              "colorPalette", "skinDetail", "hairDetail", "material",
+              "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "typography",
+              "referenceType"
+            ];
+            blanketDisableGroups.forEach(g => disableGroup(g, reason));
 
-            // Cinematic presets (define camera + lens + lighting) → block camera, lens, aperture, lighting
-            const cinematicPresets = ["a24", "marvel-mcu", "top-gun", "hbo-prestige", "netflix-4k", "noir-batman", "bbc-period"];
-            if (cinematicPresets.includes(qs)) {
-              disableGroup("cameraBody", reason);
-              disableGroup("lens", reason);
-              disableGroup("aperture", reason);
-              disableGroup("lightType", reason);
-              disableGroup("colorPalette", reason);
-            }
+            // Disable all toggle checkboxes
+            disableToggle("skinRenderBoost", reason);
+            disableToggle("hairRenderBoost", reason);
+            disableToggle("generateFourMode", reason);
+            disableToggle("grid3x3Mode", reason);
+            disableToggle("maxConsistency", reason);
+            disableToggle("beforeAfter", reason);
+            disableToggle("seamlessPattern", reason);
 
-            // Animation/artistic presets → block camera, lens, aperture, format, skin/hair detail
-            const animationPresets = ["pixar", "studio-ghibli", "spider-verse", "80s-fantasy"];
-            if (animationPresets.includes(qs)) {
-              disableGroup("cameraBody", reason);
-              disableGroup("lens", reason);
-              disableGroup("aperture", reason);
-              disableGroup("format", reason);
-              disableGroup("skinDetail", reason);
-              disableGroup("hairDetail", reason);
-              disableToggle("skinRenderBoost", reason);
-              disableToggle("hairRenderBoost", reason);
-            }
-
-            // Presets that define specific lighting → block lightType and timeOfDay
-            const lightingPresets = ["a24", "noir-batman", "bbc-period", "top-gun", "80s-fantasy", "hbo-prestige", "netflix-4k", "wes-anderson", "marvel-mcu"];
-            if (lightingPresets.includes(qs)) {
-              disableGroup("lightType", reason);
-            }
-
-            // Presets that define specific color grading → block colorPalette
-            const colorPresets = ["a24", "wes-anderson", "marvel-mcu", "noir-batman", "top-gun", "hbo-prestige", "netflix-4k"];
-            if (colorPresets.includes(qs)) {
-              disableGroup("colorPalette", reason);
-            }
-
-            // Wes Anderson defines specific aperture (f/16) and composition (symmetry)
-            if (qs === "wes-anderson") {
-              disableGroup("aperture", reason);
-              disableGroup("angle", reason);
-            }
+            // Visually disable all sections except quickStyle and aspectRatio
+            document.querySelectorAll(".left-panel > .section").forEach(sec => {
+              const id = sec.id || "";
+              // Keep quickStyleSection and aspectRatioSection enabled
+              if (id === "quickStyleSection" || id === "aspectRatioSection") return;
+              // Keep AI Model section enabled (needed to switch output format)
+              if (sec.querySelector('[data-group="aiModel"]')) return;
+              // Keep Scene Description enabled (user still needs to describe the subject)
+              if (sec.querySelector('#mainSubject')) return;
+              sec.classList.add("disabled-section");
+            });
           }
           if (state.photoStyle || state.cinemaStyle || state.directorStyle) {
             disableGroup("quickStyle", "Авторский стиль уже выбран — конфликт со стилевым пресетом");
@@ -4204,7 +4569,7 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
 
         function resetAll() {
           // Reset state
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "quickStyle", "mainSubject", "textContent", "negativePrompt"].forEach(k => state[k] = "");
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle", "mainSubject", "textContent", "negativePrompt"].forEach(k => state[k] = "");
           state.lightType = { primary: "", accent: "" };
           state.timeOfDay = { primary: "", accent: "" };
           state.lightFX = []; state.colorPalette = ""; state.skinDetail = []; state.hairDetail = []; state.material = []; state.typography = [];
@@ -4285,4 +4650,6 @@ RULES: (1) Use the uploaded reference photo as the ABSOLUTE GROUND TRUTH for ide
 
 
 
-</body></html>
+</body>
+
+</html>
