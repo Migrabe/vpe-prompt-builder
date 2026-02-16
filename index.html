@@ -2883,6 +2883,21 @@
 --cw 100
 `;
 
+
+
+        const FILM_STOCKS = {
+          "Kodak Portra 400": "Kodak Portra 400 warmth, fine grain, natural skin tones",
+          "CineStill 800T": "CineStill 800T cold tungsten balance, halation effects, cinematic night look",
+          "Kodak Gold 200": "Kodak Gold 200 warm golden tones, nostalgic grain, vibrant colors",
+          "Fujifilm Pro 400H": "Fujifilm Pro 400H soft pastel tones, cool shadows, natural greens",
+          "Kodak Ektar 100": "Kodak Ektar 100 high saturation, fine grain, vivid landscapes",
+          "Kodak Tri-X 400": "Kodak Tri-X 400 high contrast black and white, dramatic grain structure",
+          "Ilford HP5 Plus": "Ilford HP5 Plus smooth grain, wide dynamic range, classic black and white",
+          "Fujifilm Velvia 50": "Fujifilm Velvia 50 extreme saturation, vivid colors, high contrast",
+          "Kodak Vision3 500T": "Kodak Vision3 500T cinematic look, tungsten balance, rich shadows",
+          "Kodak Aerochrome": "Kodak Aerochrome infrared film, surreal pink foliage, high contrast"
+        };
+
         // =============================================
         // UTILS
         // =============================================
@@ -3749,6 +3764,7 @@
           if (state.lightType.primary) desc.push(state.lightType.primary);
           if (state.lightType.accent) desc.push(state.lightType.accent);
           if (state.timeOfDay.primary) desc.push(state.timeOfDay.primary);
+          if (state.timeOfDay.accent) desc.push(state.timeOfDay.accent);
 
           // Light FX (MJ handles these well)
           state.lightFX.forEach(fx => desc.push(fx));
@@ -4000,6 +4016,158 @@
           return (text.trim() + "\n\nNegative prompt: " + negRaw).trim();
         }
 
+        // =============================================
+        // BUILD G4 PROMPT — NANO BANANA PRO
+        // =============================================
+        function buildG4ForNBP(basePromptText) {
+          // ---- Собираем base_scene из текущего state ----
+          const cam = [state.cameraBody, state.lens, state.aperture].filter(Boolean).join(", ");
+
+          const lightParts = [];
+          if (state.lightType.primary) lightParts.push(state.lightType.primary + " as key light");
+          if (state.lightType.accent) lightParts.push(state.lightType.accent + " as accent");
+          if (state.timeOfDay.primary) lightParts.push(state.timeOfDay.primary);
+          state.lightFX.forEach(fx => lightParts.push(fx));
+          const lighting = lightParts.join(", ") || "natural lighting";
+
+          const colorParts = [];
+          if (state.colorPalette) colorParts.push(state.colorPalette);
+          if (state.filmStock && FILM_STOCKS[state.filmStock]) colorParts.push(FILM_STOCKS[state.filmStock]);
+          const color = colorParts.join(". ") || "";
+
+          const skinParts = state.skinDetail.length ? state.skinDetail.join(", ") : "";
+          const styleParts = [state.photoStyle, state.cinemaStyle, state.directorStyle].filter(Boolean).join(", ");
+
+          const ar = state.aspectRatio || "16:9";
+          const res = state.resolution || "4K";
+          const subject = state.mainSubject || "the subject";
+
+          // ---- Negative: встроен в base_scene, не отдельным блоком ----
+          const neg = state.negativePrompt
+            ? state.negativePrompt
+            : "No blurred faces, no plastic skin, no extra fingers";
+
+          // ---- Формируем JSON-объект ----
+          const g4 = {
+            task: "GENERATE_SCENE_VARIATIONS",
+            instruction: "STRICT REQUIREMENT: Generate 4 SEPARATE, INDIVIDUAL images. Do NOT create a grid or collage. Execute the image generation tool 4 separate times.",
+            identity_lock: state.maxConsistency
+              ? "The subject's face, bone structure, skin tone, and all physical features MUST remain 100% identical across all 4 images. The uploaded reference photo is the absolute source of facial identity. Zero deviation."
+              : "Maintain consistent character appearance across all variations.",
+            base_scene: {
+              subject: subject,
+              camera: cam || null,
+              lighting: lighting,
+              color: color || null,
+              skin: skinParts || null,
+              style: styleParts || null,
+              negative: neg
+            },
+            global_settings: {
+              aspect_ratio: ar,
+              resolution: res,
+              consistency: "Maintain identical character, wardrobe, accessories. Only camera angle, framing, and environment change."
+            },
+            variations: [
+              {
+                id: 1,
+                shot_type: "Low angle",
+                angle: "Camera low, looking up at subject from the right",
+                framing: "Medium-full body, subject powerful against sky",
+                direction: "Emphasize industrial architecture above." + (cam ? " " + cam + "." : ""),
+                environment_note: "Add new environmental details not in base scene."
+              },
+              {
+                id: 2,
+                shot_type: "Cowboy shot",
+                angle: "Eye level, facing subject",
+                framing: "Mid-thigh up",
+                direction: "Subject walks toward camera. Shallow depth of field. Compression feel.",
+                environment_note: "Add new environmental details not in base scene."
+              },
+              {
+                id: 3,
+                shot_type: "Dutch angle",
+                angle: "Tilted 15°, eye level",
+                framing: "Medium shot, waist up",
+                direction: "Subject mid-action — show the next story beat. Diagonal tension.",
+                environment_note: "Add new environmental details not in base scene."
+              },
+              {
+                id: 4,
+                shot_type: "Three-quarter from left",
+                angle: "Behind-left of subject, looking over shoulder",
+                framing: "Three-quarter body with environment",
+                direction: "Wide angle 24mm feel. Environmental storytelling.",
+                environment_note: "Add new environmental details not in base scene."
+              }
+            ]
+          };
+
+          // Убираем null-поля для чистоты
+          Object.keys(g4.base_scene).forEach(k => {
+            if (!g4.base_scene[k]) delete g4.base_scene[k];
+          });
+
+          return JSON.stringify(g4, null, 2);
+        }
+
+        function buildG4FlatForNBP(basePromptText) {
+          const subject = state.mainSubject || "the subject";
+          const cam = [state.cameraBody, state.lens, state.aperture].filter(Boolean).join(", ");
+          const ar = state.aspectRatio || "16:9";
+          const res = state.resolution || "4K";
+
+          const lightParts = [];
+          if (state.lightType.primary) lightParts.push(state.lightType.primary);
+          if (state.lightType.accent) lightParts.push(state.lightType.accent);
+          if (state.timeOfDay.primary) lightParts.push(state.timeOfDay.primary);
+          state.lightFX.forEach(fx => lightParts.push(fx));
+          const lighting = lightParts.join(", ") || "natural lighting";
+
+          const colorParts = [];
+          if (state.colorPalette) colorParts.push(state.colorPalette);
+          if (state.filmStock && FILM_STOCKS[state.filmStock]) colorParts.push(FILM_STOCKS[state.filmStock]);
+          const color = colorParts.join(". ");
+
+          const skin = state.skinDetail.length ? state.skinDetail.join(", ") : "";
+          const style = [state.photoStyle, state.cinemaStyle, state.directorStyle].filter(Boolean).join(". ");
+          const neg = state.negativePrompt || "No blurred faces, no plastic skin, no extra fingers";
+
+          const identity = state.maxConsistency
+            ? "IDENTITY LOCK: The subject's face, bone structure, skin tone, and all physical features must remain 100% identical across all 4 images. Reference photo is the absolute source of identity.\\n\\n"
+            : "";
+
+          let flat = `GENERATE 4 SCENE VARIATIONS
+
+You must generate 4 separate, individual images. Do NOT create a grid or collage. Execute the image generation tool 4 separate times.
+
+${identity}BASE SCENE: ${subject}.`;
+
+          if (cam) flat += ` Photographed on ${cam}.`;
+          flat += ` ${lighting}.`;
+          if (color) flat += ` ${color}.`;
+          if (skin) flat += ` ${skin}.`;
+          if (style) flat += ` ${style}.`;
+          flat += ` ${ar} aspect ratio, ${res}. ${neg}.`;
+
+          flat += `\\nMaintain character and wardrobe across all shots.
+
+--- VARIATION 1: LOW ANGLE ---
+Low angle shot, camera looking up at the subject from the right side. Subject appears powerful against the sky.${cam ? " " + cam + "." : ""} Reframe with new environmental details.
+
+--- VARIATION 2: COWBOY SHOT ---
+Cowboy shot framing (mid-thigh up). Subject walks toward camera. Shallow depth of field. Compression feel. Reframe with new environmental details.
+
+--- VARIATION 3: DUTCH ANGLE ---
+Dutch angle, tilted 15°. Subject mid-action — show the next story beat. Dynamic diagonal tension. Reframe with new environmental details.
+
+--- VARIATION 4: THREE-QUARTER FROM LEFT ---
+Three-quarter body from the left. Subject turns, looking over shoulder. Wide angle 24mm feel, environmental storytelling. Reframe with new environmental details.`;
+
+          return flat;
+        }
+
 
         function updateAll() {
           // Sync inputs to state
@@ -4081,50 +4249,47 @@
             promptText = GRID_3X3_PREFIX + promptText;
           }
 
-          // Generate 4 — prepend the JSON block, replacing "subject" with scene description if filled
+          // Generate 4 — dynamic block based on selected model
           if (state.generateFourMode) {
-            let g4block = GENERATE_FOUR_PREFIX;
+            const isNBP = ["nano-banana-pro", "nano-banana", "gemini-imagen"].includes(state.aiModel);
 
-            // Replace "subject" with scene description
-            if (state.mainSubject && state.mainSubject.trim()) {
-              g4block = g4block.replace(/of a subject/g, "of " + state.mainSubject.trim());
-              g4block = g4block.replace(/the Subject/g, state.mainSubject.trim());
-            }
-
-            // Replace 21:9 with reference image aspect ratio if a reference is loaded
-            if (state.referenceImages.length && state.referenceImages[0].width && state.referenceImages[0].height) {
-              const w = state.referenceImages[0].width;
-              const h = state.referenceImages[0].height;
-              const ratio = w / h;
-
-              // Find closest standard AR
-              const standardARs = [
-                { label: "1:1", val: 1 },
-                { label: "4:5", val: 4 / 5 },
-                { label: "3:4", val: 3 / 4 },
-                { label: "2:3", val: 2 / 3 },
-                { label: "9:16", val: 9 / 16 },
-                { label: "5:4", val: 5 / 4 },
-                { label: "4:3", val: 4 / 3 },
-                { label: "3:2", val: 3 / 2 },
-                { label: "16:9", val: 16 / 9 },
-                { label: "21:9", val: 21 / 9 },
-              ];
-              let closest = standardARs[0];
-              let minDiff = Math.abs(ratio - closest.val);
-              for (const ar of standardARs) {
-                const diff = Math.abs(ratio - ar.val);
-                if (diff < minDiff) { minDiff = diff; closest = ar; }
+            if (isNBP) {
+              // NBP: выбираем формат — JSON если structured, flat если flat
+              if (state.promptFormat === "structured") {
+                promptText = buildG4ForNBP(promptText) + "\n\n" + promptText;
+              } else {
+                promptText = buildG4FlatForNBP(promptText);
+                // В flat-режиме base prompt уже внутри G4 блока, не дублируем
               }
-
-              const refAR = closest.label;
-              if (refAR !== "21:9") {
-                g4block = g4block.replace(/"aspect_ratio": "21:9"/g, '"aspect_ratio": "' + refAR + '"');
-                g4block = g4block.replace(/in a 21:9 format/g, "in a " + refAR + " format");
+            } else {
+              // Standard Legacy Logic for other models
+              let g4block = GENERATE_FOUR_PREFIX;
+              if (state.mainSubject && state.mainSubject.trim()) {
+                g4block = g4block.replace(/of a subject/g, "of " + state.mainSubject.trim());
+                g4block = g4block.replace(/the Subject/g, state.mainSubject.trim());
               }
+              // Reference AR Logic (Legacy)
+              if (state.referenceImages.length && state.referenceImages[0].width && state.referenceImages[0].height) {
+                const w = state.referenceImages[0].width;
+                const h = state.referenceImages[0].height;
+                const ratio = w / h;
+                const standardARs = [
+                  { label: "1:1", val: 1 }, { label: "16:9", val: 16 / 9 }, { label: "21:9", val: 21 / 9 }, { label: "2:3", val: 2 / 3 }, { label: "9:16", val: 9 / 16 }
+                ];
+                let closest = standardARs[0];
+                let minDiff = Math.abs(ratio - closest.val);
+                for (const ar of standardARs) {
+                  const diff = Math.abs(ratio - ar.val);
+                  if (diff < minDiff) { minDiff = diff; closest = ar; }
+                }
+                const refAR = closest.label;
+                if (refAR !== "21:9") {
+                  g4block = g4block.replace(/"aspect_ratio": "21:9"/g, '"aspect_ratio": "' + refAR + '"');
+                  g4block = g4block.replace(/in a 21:9 format/g, "in a " + refAR + " format");
+                }
+              }
+              promptText = g4block + "\n\n" + promptText;
             }
-
-            promptText = g4block + "\n\n" + promptText;
           }
 
           // Ensure NEGATIVE block is always the very last part of the final prompt
