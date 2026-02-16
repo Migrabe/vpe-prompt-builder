@@ -2793,41 +2793,7 @@
           isStandardPresetActive: false
         };
 
-        const GENERATE_FOUR_PREFIX = `{
-  "task": "GENERATE_SCENE_VARIATIONS",
-  "instruction": "STRICT REQUIREMENT: Generate 4 SEPARATE, INDIVIDUAL image files. Do NOT create a single image containing a grid or collage. You must execute the image generation tool 4 separate times, once for each prompt below, and present 4 distinct outputs.",
-  "reference_instruction": "Use the primary render ONLY for overall scene and style consistency. The subject's face, facial structure, proportions, and overall appearance MUST be taken exclusively from the uploaded reference photo and have absolute priority over any generated render.",
-  "base_prompt": "",
-  "base_prompt_note": "No primary prompt available.",
-  "global_settings": {
-    "aspect_ratio": "21:9",
-    "image_size": "2K",
-    "model": "gemini-3-pro-image-preview"
-  },
-  "variations": [
-    {
-      "id": 1,
-      "shot_type": "Low angle shot of the scene facing the right side of the camera:",
-      "prompt": "A photorealistic image of a low angle shot of the scene facing the right side of the camera: of a subject. The scene is illuminated by harsh midday sun lighting. Captured with a Sony FX6. Applied effect(s): Desaturated Grunge. No blurred faces. The image should be in a 21:9 format. Reframe the shot. Maintain the character and scene details from the reference, but change the camera viewpoint. With new details about the environment."
-    },
-    {
-      "id": 2,
-      "shot_type": "Cowboy-shot",
-      "prompt": "A photorealistic image of a cowboy-shot of a subject. The scene is illuminated by harsh midday sun lighting. Captured with a Sony FX6, 200mm Super Telephoto Lens. Applied effect(s): Desaturated Grunge. No blurred faces. The image should be in a 21:9 format. Reframe the shot. Maintain the character and scene details from the reference, but change the camera viewpoint. With new details about the environment."
-    },
-    {
-      "id": 3,
-      "shot_type": "Dutch angle",
-      "prompt": "A photorealistic image of a dutch angle of a subject. What would the Subject do next? Show us the results of that action. The scene is illuminated by harsh midday sun lighting. Captured with a Sony FX6. Applied effect(s): Desaturated Grunge. No blurred faces. The image should be in a 21:9 format. Reframe the shot. Maintain the character and scene details from the reference, but change the camera viewpoint. With new details about the environment."
-    },
-    {
-      "id": 4,
-      "shot_type": "Three quarter body shot of the scene facing the left side of the camera:",
-      "prompt": "A photorealistic image of a three quarter body shot of the scene facing the left side of the camera: of a subject. The scene is illuminated by harsh midday sun lighting. Captured with a Sony FX6, 24mm Wide angle Lens. Applied effect(s): Desaturated Grunge. No blurred faces. The image should be in a 21:9 format. Reframe the shot. Maintain the character and scene details from the reference, but change the camera viewpoint. With new details about the environment."
-    }
-  ]
-}
-`;
+        const GENERATE_FOUR_PREFIX = `Generate 4 distinct variations of the subject instructions below. Do not create a grid. Create 4 separate images.`;
 
         const GRID_3X3_PREFIX = `3x3 Cinematic Contact Sheet, 3:4 AR. Full-bleed, no margins, thin dark dividers. Frozen scene logic: static subject/env consistency with dynamic cinematic lighting/DOF. Arri Alexa 35, 35mm, f/2.8, 8k, color-graded. 9 Panels: 1.ELS, 2.LS, 3.MLS, 4.MS, 5.MCU, 6.CU, 7.ECU (detail), 8.Low Angle, 9.High Angle.
 `;
@@ -3575,8 +3541,11 @@
           if (state.lens) parts.push(state.lens);
           if (state.aperture) parts.push(state.aperture);
           if (state.filmStock) parts.push(state.filmStock);
-          if (state.angle) parts.push(state.angle);
-          if (state.composition) parts.push(state.composition);
+          // Explicitly ignore Angle and Composition in G4 mode (variations handle this)
+          if (!state.generateFourMode) {
+            if (state.angle) parts.push(state.angle);
+            if (state.composition) parts.push(state.composition);
+          }
 
           // Lighting — flat, no curly braces
           if (state.lightType.primary) parts.push(state.lightType.primary);
@@ -4203,8 +4172,14 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           }
 
           // === Generate 4 Mode: disable lens section ===
+          // === Generate 4 Mode: disable lens section (ONLY if not NBP / Legacy G4 mode) ===
+          // Actually, G4 NBP uses lens. Legacy text G4 also allows lens. So we UNBLOCK lens for G4.
+          // We only block it if we want to enforce defaults, but Analysis says "Lens... blocks... but lens NOT cleared".
+          // So let's keep it ENABLED (remove disabled-section) if G4 is on.
+          // But wait, existing code BLOCKED it. Modification:
           if (state.generateFourMode) {
-            $("lensSection").classList.add("disabled-section");
+            // For NBP, we definitely want lens. For Legacy, maybe. Let's unblock for all G4.
+            $("lensSection").classList.remove("disabled-section");
           } else {
             $("lensSection").classList.remove("disabled-section");
           }
@@ -4256,7 +4231,7 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
             if (isNBP) {
               // NBP: выбираем формат — JSON если structured, flat если flat
               if (state.promptFormat === "structured") {
-                promptText = buildG4ForNBP(promptText) + "\n\n" + promptText;
+                promptText = buildG4ForNBP(promptText);
               } else {
                 promptText = buildG4FlatForNBP(promptText);
                 // В flat-режиме base prompt уже внутри G4 блока, не дублируем
@@ -4292,8 +4267,11 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
             }
           }
 
-          // Ensure NEGATIVE block is always the very last part of the final prompt
-          promptText = appendNegativeLast(promptText);
+          // Ensure NEGATIVE block is always the very last part of the final prompt (Skip for NBP G4)
+          const isNBPG4 = state.generateFourMode && ["nano-banana-pro", "nano-banana", "gemini-imagen"].includes(state.aiModel);
+          if (!isNBPG4) {
+            promptText = appendNegativeLast(promptText);
+          }
 
           const outBox = $("promptOutput");
           outBox.textContent = promptText;
