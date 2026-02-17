@@ -1148,6 +1148,41 @@
       margin-bottom: 0;
       pointer-events: none;
     }
+
+    /* === MOBILE LAYOUT FIX === */
+    html,
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
+      }
+
+      .left-panel,
+      .right-panel {
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        padding: 16px;
+      }
+
+      .right-panel {
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+
+      .header {
+        padding: 12px 16px;
+      }
+    }
   </style>
 </head>
 
