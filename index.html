@@ -1355,6 +1355,42 @@
           </div>
         </div>
 
+        <!-- Emotions -->
+        <div class="section" id="emotionSection">
+          <div class="section-header">
+            <h2><span class="icon icon-orange">🎭</span> Эмоции <span class="help-tip">?<span
+                  class="tip-text"><b>Эмоциональный слой</b> — добавляет глубокую проработку мимики и настроения
+                  персонажа.<br><br><b>Влияет на:</b> микровыражения лица, работу мышц, взгляд, а также на освещение
+                  (для поддержки настроения).<br><br><b>Совет:</b> Используйте "Безмятежное Спокойствие" (Serene), чтобы
+                  убрать случайные эмоции AI и получить нейтральное лицо.</span></span></h2>
+            <span class="mode-badge">single</span>
+          </div>
+          <div class="section-content">
+            <div class="option-group">
+              <button class="option-btn" data-group="emotion" data-value="Euphoria"
+                title="Искренняя радость, улыбка глазами (Duchenne)">Искренняя Эйфория</button>
+              <button class="option-btn" data-group="emotion" data-value="Grief"
+                title="Тяжёлая скорбь, стеклянный взгляд, слёзы">Глубокая Скорбь</button>
+              <button class="option-btn" data-group="emotion" data-value="Rage"
+                title="Скрытая ярость, напряжение, пульсирующая вена">Скрытая Ярость</button>
+              <button class="option-btn" data-group="emotion" data-value="Terror"
+                title="Животный ужас, расширенные зрачки, свет снизу">Животный Ужас</button>
+              <button class="option-btn" data-group="emotion" data-value="Disgust"
+                title="Отвращение, сморщенный нос, зелёный подтон">Внутреннее Отвращение</button>
+              <button class="option-btn" data-group="emotion" data-value="Shock"
+                title="Полный шок, отвисшая челюсть, застывший взгляд">Полный Шок</button>
+              <button class="option-btn" data-group="emotion" data-value="Contempt"
+                title="Презрение, ухмылка, асимметрия лица">Скептическое Презрение</button>
+              <button class="option-btn" data-group="emotion" data-value="Pain"
+                title="Мучительная боль, крик, пот, контрастный свет">Мучительная Боль</button>
+              <button class="option-btn" data-group="emotion" data-value="Nostalgia"
+                title="Светлая грусть, улыбка сквозь слёзы, мягкий фокус">Горько-сладкая Ностальгия</button>
+              <button class="option-btn" data-group="emotion" data-value="Serene"
+                title="Полное спокойствие, deadpan, паспортное фото">Безмятежное Спокойствие</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Aspect Ratio -->
         <div class="section" id="aspectRatioSection">
           <div class="section-header">
@@ -2605,7 +2641,8 @@
           hairDetail: { mode: "multi" },
           material: { mode: "multi" },
           typography: { mode: "multi" },
-          quickStyle: { mode: "single" }
+          quickStyle: { mode: "single" },
+          emotion: { mode: "single" }
         };
 
         const resolutionMap = {
@@ -2725,6 +2762,23 @@
         ];
 
         // =============================================
+        // EMOTION PRESETS
+        // =============================================
+        const EMOTIONS = {
+          "Euphoria": "(genuine euphoria:1.3), Duchenne smile, (crinkled eyes with crow's feet:1.2), zygomaticus major activation, raised cheeks, sparkling eyes with distinct catchlights, natural skin texture stretching over cheekbones, soft warm golden hour lighting, high-key atmosphere",
+          "Grief": "(deep grief:1.3), heartbroken expression, (inner eyebrows raised and drawn together:1.4), omega sign on forehead, quivering lower lip, downturned mouth corners, (glassy eyes brimming with unshed tears:1.2), red puffy eyelids, pale complexion, low-key lighting, cool blue tones, heavy shadows obscuring the eyes (toplight)",
+          "Rage": "(suppressed rage:1.4), intense micro-expressions, (clenched jaw and pulsing temple vein), flared nostrils, furrowed brow, corrugator supercilii activation, narrowed piercing eyes, fixed stare, lips pressed into a thin line, dramatic side lighting (chiaroscuro), high contrast, deep shadows",
+          "Terror": "(sheer terror:1.5), face of pure horror, (eyes wide open showing sclera above iris:1.3), dilated pupils, pale drained skin, sweat beads on forehead, trembling parted lips, tense neck muscles, spooky underlighting (lighting from below), unnatural upward shadows",
+          "Disgust": "(visceral disgust:1.3), repulsed expression, (wrinkled nose:1.4), nasalis muscle activation, curled upper lip, narrowed squinting eyes, pulling head back, distinct nasolabial folds, harsh texture accentuating lighting, greenish undertone",
+          "Shock": "(state of total shock:1.3), frozen in disbelief, (jaw dropped:1.2), mouth agape, slack jaw, highly raised arched eyebrows, eyes wide open, blank stare, motionless, sharp rim lighting separating subject from background, stillness",
+          "Contempt": "(skeptical contempt:1.2), arrogance, (asymmetrical facial expression:1.3), one eyebrow cocked high, unilateral smirk (one lip corner raised), eyelids narrowed in judgment, looking down on viewer, split lighting (side light), sharp shadows",
+          "Pain": "(screaming in agony:1.4), physical pain, eyes tightly squeezed shut, teeth gritted or mouth wide open in a scream, (veins popping on forehead and neck), sweat dripping, contorted facial muscles, extreme tension, dramatic high-contrast lighting, gritty texture",
+          "Nostalgia": "(bittersweet expression:1.2), emotional complexity, (smiling mouth with sad eyes:1.3), gentle upturned lips paired with teary glistening eyes, soft melancholic gaze, emotional dissonance, nostalgic atmosphere, dreamy backlighting, lens flare, soft focus",
+          "Serene": "(serene neutrality:1.3), deadpan face, completely relaxed facial muscles, blank stare, unfocused gaze, slack jaw, no micro-expressions, symmetry, soft diffuse studio lighting, passport photo style"
+        };
+        window.EMOTIONS = EMOTIONS; // Expose for verification
+
+        // =============================================
         // QUICK STYLE PRESETS
         // =============================================
         const QUICK_STYLES = {
@@ -2740,7 +2794,7 @@
 
           "wednesday": "Wednesday Netflix gothic dark academia cinematography aesthetic. LIGHTING: moody overcast natural light, gothic architecture with dramatic shadows, candlelit and lantern-lit interiors, moonlight through stained glass windows, cold blue-grey daylight, dramatic chiaroscuro contrast, Tim Burton-inspired expressionistic lighting, fog and mist atmospheric effects. COLOR GRADING: heavily desaturated with deep blacks and cool greys, selective color pops (blood red, poison purple, toxic green), monochromatic gothic palette, cold blue undertones, high contrast with crushed blacks, Burton-esque dark whimsy color treatment. TECHNICAL: Dutch angles and off-kilter framing for unease, symmetrical centered compositions for gothic formality, wide shots emphasizing gothic architecture, intimate close-ups with deadpan expressions, shallow to medium depth of field (f/2.8-f/4), Tim Burton visual language, stylized yet grounded aesthetic. ATMOSPHERE: gothic dark comedy, macabre humor, teenage outsider angst, supernatural mystery, Addams Family legacy, dark academia aesthetic, deadpan wit, Burton-meets-teen-drama. QUALITY: photorealistic with stylized gothic elements, 8K resolution, Netflix prestige teen series, Tim Burton directorial style, award-winning production design, theatrical gothic aesthetic, darkly whimsical.",
 
-          "blade-runner-2049": "Blade Runner 2049 neo-noir cyberpunk cinematography, Roger Deakins masterwork. LIGHTING: dramatic volumetric fog with laser light beams, monumental scale lighting, orange sodium vapor dystopian exteriors, cool blue-grey rain-soaked scenes, warm amber interior glow, god rays through industrial haze, practical neon signs and holographic advertisements. COLOR GRADING: bold saturated orange and teal separation, monochromatic sequences (orange desert, purple Vegas), deep blacks with vibrant color accents, cyberpunk neon palette, desaturated with selective color pops, cinematic color contrast pushed to maximum. TECHNICAL: ultra-wide establishing shots emphasizing scale and isolation, symmetrical centered compositions, extreme shallow depth of field (f/1.4), anamorphic lens flares, slow deliberate camera movements, IMAX quality, pristine sharp image. ATMOSPHERE: dystopian future noir, existential loneliness, monumental architecture, technological decay, philosophical sci-fi, visual poetry. QUALITY: photorealistic, 8K IMAX resolution, Academy Award-winning cinematography, Roger Deakins visual mastery.",
+          "blade-runner-2049": "Blade Runner 2049 neo-noir cyberpunk cinematography, Roger Deakins masterwork. LIGHTING: dramatic volumetric fog with laser light beams, monumental scale lighting, orange sodium vapor dystopian exteriors, cool blue-grey rain-soaked scenes, warm amber interior glow, god rays through industrial haze, practical neon signs and holographic advertisements. COLOR GRADING: bold saturated orange and teal separation, monochromatic sequences (orange desert, purple Vegas), deep blacks with vibrant color accents, cyberpunk neon palette, desaturated with selective color pops, cinematic color contrast pushed to maximum. TECHNICAL: ultra-wide establishing shots of landscapes and isolation, symmetrical centered compositions, extreme shallow depth of field (f/1.4), anamorphic lens flares, slow deliberate camera movements, IMAX quality, pristine sharp image. ATMOSPHERE: dystopian future noir, existential loneliness, monumental architecture, technological decay, philosophical sci-fi, visual poetry. QUALITY: photorealistic, 8K IMAX resolution, Academy Award-winning cinematography, Roger Deakins visual mastery.",
 
           "grand-budapest-hotel": "The Grand Budapest Hotel Wes Anderson symmetrical whimsical cinematography. LIGHTING: soft even studio lighting, pastel-friendly neutral temperature, theatrical stage lighting aesthetic, natural window light in symmetrical compositions, warm interior hotel lighting, bright clean exterior daylight. COLOR GRADING: vibrant pastel color palette (pink, purple, mint green, coral, baby blue), highly saturated candy colors, meticulously color-coordinated production design, distinct color schemes for different time periods, storybook aesthetic. TECHNICAL: perfectly centered symmetrical compositions, flat frontal camera angles, whip pans and snap zooms, miniature model shots, stop-motion animation sequences, planimetric framing, dollhouse aesthetic. ATMOSPHERE: whimsical European nostalgia, theatrical storybook charm, meticulous detail, quirky sophistication, fairy tale elegance. QUALITY: photorealistic with stylized production design, 8K resolution, Academy Award-winning production design, Wes Anderson signature visual style.",
 
@@ -2772,7 +2826,7 @@
         // =============================================
         // STATE
         // =============================================
-        const state = {
+        let state = {
           aiModel: "", cameraBody: "", aspectRatio: "", resolution: "", purpose: "", format: "", photoStyle: "", cinemaStyle: "", directorStyle: "", filmStock: "",
           lens: "", aperture: "", angle: "", composition: "", quality: "",
           lightType: { primary: "", accent: "" },
@@ -2781,6 +2835,7 @@
           referenceType: "", referenceWeight: 50,
           mainSubject: "", textContent: "", negativePrompt: "",
           quickStyle: "",
+          emotion: "",
           generateFourMode: false, grid3x3Mode: false, maxConsistency: false, beforeAfter: false, seamlessPattern: false, seed: "",
           // Engine-specific generation params
           mjVersion: "7", mjStyle: "", mjStylize: 250, mjChaos: 0, mjWeird: 0,
@@ -2792,6 +2847,7 @@
           promptFormat: "flat",  // flat | structured | midjourney
           isStandardPresetActive: false
         };
+        window.state = state; // Expose for verification
 
         const GENERATE_FOUR_PREFIX = `Generate 4 distinct variations of the subject instructions below. Do not create a grid. Create 4 separate images.`;
 
@@ -2842,7 +2898,6 @@
         const MAX_CONSISTENCY_PREFIX = `FACE ID LOCKED from reference. Exact facial match required - all features preserved.
 "CONSISTENCY PROTOCOL": "100% facial feature".
 "preservation from reference image".
-"Preserve skin texture and micro-details".
 "FACE LOCKED": "NON-NEGOTIABLE"
 "FACE CONSISTENCY": "100% - All facial features must remain IDENTICAL to locked reference CHARACTER INTEGRITY: Maintain key features across all variations ZERO DEVIATION from specified eye color, hair color, face structure, unique identifiers
 "Keep the facial features of the person in the uploaded image exactly consistent. Do not modify their identity. Maintain 70% identical bone structure, skin tone, and facial imperfections (moles, scars)."
@@ -3485,7 +3540,7 @@
           "in the style of Peter Lindbergh, black and white, raw beauty, minimal retouching": "raw black-and-white portrait, unretouched natural beauty, high contrast silver gelatin aesthetic, emotional authenticity",
           "in the style of Steve McCurry, vivid saturated colors, documentary": "vivid hypersaturated documentary photograph, intense eye contact, Kodachrome warmth, National Geographic composition",
           "in the style of Helmut Newton, high contrast, provocative glamour, black and white": "high contrast glamour noir, provocative fashion pose, hard directional light, bold black-and-white with deep blacks",
-          "in the style of Mario Testino, warm golden tones, glossy fashion": "warm golden fashion tones, sun-kissed glossy skin, aspirational luxury aesthetic, bright editorial warmth",
+          "in the style of Mario Testino, warm golden tones, glossy fashion": "warm golden fashion tones, sun-kisses glossy skin, aspirational luxury aesthetic, bright editorial warmth",
           "in the style of Tim Walker, surreal, fantastical, pastel dreamlike": "surreal fantastical set design, pastel dreamlike palette, whimsical oversized props, fairy-tale fashion fantasy",
           "in the style of Ansel Adams, high dynamic range landscape, deep blacks, zone system": "extreme tonal range landscape, pure black to bright white, zone-system exposure, majestic wilderness clarity",
           "in the style of Richard Avedon, stark white background, high contrast portrait": "stark pure white background, high contrast minimalist portrait, sharp focus on facial character, fashion-documentary hybrid",
@@ -3593,7 +3648,11 @@
             finalPrompt += `subject: ${state.mainSubject.trim()}\n`;
           }
 
-          // Add Modifiers
+          // EMOTION
+          if (state.emotion && EMOTIONS[state.emotion]) {
+            finalPrompt += `emotion: ${EMOTIONS[state.emotion]}\n`;
+          }
+
           const modifiers = parts.filter(Boolean).join(", ");
           if (modifiers) finalPrompt += modifiers;
 
@@ -3629,6 +3688,7 @@
           if (state.purpose) parts.push(state.purpose);
           if (state.format && !(state.format === "photorealistic" && ["Photography", "Cinematic Still", "Product Photography"].includes(state.purpose))) parts.push(state.format);
           if (state.mainSubject) parts.push(state.mainSubject.trim());
+          if (state.emotion) parts.push(`EMOTION: ${EMOTIONS[state.emotion]}`);
           out += parts.filter(Boolean).join(", ") + "\n\n";
 
           // Camera
@@ -3710,6 +3770,7 @@
 
           // Core scene
           if (state.mainSubject) desc.push(state.mainSubject.trim());
+          if (state.emotion && EMOTIONS[state.emotion]) desc.push(EMOTIONS[state.emotion]);
 
           // Format/style (only if NOT photorealistic — MJ defaults to photo)
           if (state.format && state.format !== "photorealistic") desc.push(state.format);
@@ -3832,7 +3893,8 @@
               cinema_style: state.cinemaStyle || null,
               director_style: state.directorStyle || null,
               film_stock: state.filmStock || null,
-              quick_style: state.quickStyle || null
+              quick_style: state.quickStyle || null,
+              emotion: state.emotion || null
             },
             modes: { generateFour: state.generateFourMode, grid3x3: state.grid3x3Mode, maxConsistency: state.maxConsistency, before_after: state.beforeAfter, seamless_pattern: state.seamlessPattern },
             renderBoost: { skin: state.skinRenderBoost, hair: state.hairRenderBoost },
@@ -3873,7 +3935,7 @@
           };
 
           // Singles
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "colorPalette", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle"].forEach(k => {
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "colorPalette", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle", "emotion"].forEach(k => {
             if (state[k]) {
               addTag(k, state[k], "", () => {
                 state[k] = "";
@@ -3935,7 +3997,7 @@
         // =============================================
         function countParams() {
           let c = 0;
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle"].forEach(k => { if (state[k]) c++; });
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle", "emotion"].forEach(k => { if (state[k]) c++; });
           ["lightFX", "skinDetail", "hairDetail", "material", "typography"].forEach(k => { if ((state[k] || []).length) c++; });
           if (state.colorPalette) c++;
           if (state.lightType.primary) c++;
@@ -4010,6 +4072,7 @@
           const ar = state.aspectRatio || "16:9";
           const res = state.resolution || "4K";
           const subject = state.mainSubject || "the subject";
+          const emotion = state.emotion && EMOTIONS[state.emotion] ? EMOTIONS[state.emotion] : "";
 
           // ---- Negative: встроен в base_scene, не отдельным блоком ----
           const neg = state.negativePrompt
@@ -4025,6 +4088,7 @@
               : "Maintain consistent character appearance across all variations.",
             base_scene: {
               subject: subject,
+              emotion: emotion || null,
               camera: cam || null,
               lighting: lighting,
               color: color || null,
@@ -4102,6 +4166,7 @@
           const skin = state.skinDetail.length ? state.skinDetail.join(", ") : "";
           const style = [state.photoStyle, state.cinemaStyle, state.directorStyle].filter(Boolean).join(". ");
           const neg = state.negativePrompt || "No blurred faces, no plastic skin, no extra fingers";
+          const emotion = state.emotion && EMOTIONS[state.emotion] ? EMOTIONS[state.emotion] : "";
 
           const identity = state.maxConsistency
             ? "IDENTITY LOCK: The subject's face, bone structure, skin tone, and all physical features must remain 100% identical across all 4 images. Reference photo is the absolute source of identity.\\n\\n"
@@ -4113,6 +4178,7 @@ You must generate 4 separate, individual images. Do NOT create a grid or collage
 
 ${identity}BASE SCENE: ${subject}.`;
 
+          if (emotion) flat += ` Emotion: ${emotion}.`;
           if (cam) flat += ` Photographed on ${cam}.`;
           flat += ` ${lighting}.`;
           if (color) flat += ` ${color}.`;
@@ -4640,7 +4706,7 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
               "angle", "composition", "lightType", "timeOfDay", "lightFX",
               "colorPalette", "skinDetail", "hairDetail", "material",
               "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "typography",
-              "referenceType"
+              "referenceType", "emotion"
             ];
             blanketDisableGroups.forEach(g => disableGroup(g, reason));
 
@@ -4693,7 +4759,7 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           if (window.expandRelatedSections) window.expandRelatedSections(v);
 
           // Reset all selectable state
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle"].forEach(k => state[k] = "");
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle", "emotion"].forEach(k => state[k] = "");
           state.lightType = { primary: "", accent: "" };
           state.timeOfDay = { primary: "", accent: "" };
           state.lightFX = []; state.colorPalette = ""; state.skinDetail = []; state.hairDetail = []; state.material = []; state.typography = [];
@@ -4840,6 +4906,14 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           }
         }
 
+        window.updatePrompt = updatePrompt; // Expose for verification
+        function updatePrompt() {
+          const flat = buildFlatPrompt();
+          $("promptOutput").textContent = flat;
+          $("jsonOutput").textContent = JSON.stringify(buildJson(), null, 2);
+          checkConflicts();
+        }
+
         function savePrompt() {
           const text = $("promptOutput").textContent || "";
           if (!text.trim() || text.includes("Select parameters")) { notify("Нечего сохранять", "warn"); return; }
@@ -4853,7 +4927,7 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
 
         function resetAll() {
           // Reset state
-          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle", "mainSubject", "textContent", "negativePrompt"].forEach(k => state[k] = "");
+          ["aiModel", "cameraBody", "aspectRatio", "resolution", "purpose", "format", "lens", "aperture", "angle", "composition", "quality", "referenceType", "photoStyle", "cinemaStyle", "directorStyle", "filmStock", "quickStyle", "mainSubject", "textContent", "negativePrompt", "emotion"].forEach(k => state[k] = "");
           state.lightType = { primary: "", accent: "" };
           state.timeOfDay = { primary: "", accent: "" };
           state.lightFX = []; state.colorPalette = ""; state.skinDetail = []; state.hairDetail = []; state.material = []; state.typography = [];
@@ -4965,7 +5039,8 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
         "format": "formatSection",
         "purpose": "purposeSection",
         "referenceImages": "referencesSection",
-        "negativePrompt": "negativeSection"
+        "negativePrompt": "negativeSection",
+        "emotion": "emotionSection"
       };
 
       function toggleSection(header, forceState = null) {
@@ -5069,6 +5144,9 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
       } else {
         initCollapsible();
       }
+      window.resetAll = resetAll; // Expose for verification
+      window.buildStructuredPrompt = buildStructuredPrompt; // Expose for verification
+
     })();
   </script>
 
