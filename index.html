@@ -1236,6 +1236,42 @@
       .option-btn {
         font-size: 0.8em;
         padding: 8px;
+        word-wrap: break-word;
+      }
+
+      /* STRICT MOBILE OVERFLOW FIX */
+      body,
+      html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        position: relative;
+      }
+
+      .app {
+        width: 100%;
+        overflow-x: hidden;
+      }
+
+      .json-box {
+        white-space: pre-wrap !important;
+        /* Force wrap on mobile */
+        word-break: break-all !important;
+        max-width: 100%;
+      }
+
+      .output-box {
+        word-break: break-word;
+      }
+
+      /* Ensure no element exceeds viewport */
+      img,
+      video,
+      iframe,
+      input,
+      textarea,
+      select,
+      button {
+        max-width: 100%;
       }
     }
   </style>
