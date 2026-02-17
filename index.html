@@ -1157,6 +1157,17 @@
       position: relative;
     }
 
+    /* Universal fix for button wrapping */
+    .option-btn,
+    .preset-btn,
+    .quick-preset-btn {
+      min-width: 0;
+      white-space: normal;
+      word-break: break-word;
+      height: auto;
+      /* allow growth */
+    }
+
     @media (max-width: 900px) {
       .main-grid {
         display: flex;
@@ -1171,7 +1182,7 @@
         width: 100%;
         height: auto;
         overflow-y: visible;
-        padding: 16px;
+        padding: 12px;
       }
 
       .right-panel {
@@ -1180,7 +1191,51 @@
       }
 
       .header {
-        padding: 12px 16px;
+        padding: 12px 14px;
+      }
+
+      .header h1 {
+        font-size: 1.1em;
+      }
+
+      /* Force single column for option groups on very small screens */
+      .option-group {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        /* ensure fluid */
+      }
+
+      /* Fix 3-column specific grids if any */
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+
+      /* Ensure presets wrap */
+      #presetGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      /* Tighter mobile layout */
+      .option-group {
+        grid-template-columns: repeat(2, 1fr);
+        /* Force 2 cols */
+      }
+
+      /* Lens & Quick Style specific override for readability */
+      #quickStyleSection .option-group,
+      #lensSection .option-group {
+        grid-template-columns: 1fr;
+        /* 1 col for long text items? or 2? Let's try 2 for presets, 1 for long lenses if needed */
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Fix font sizes */
+      .option-btn {
+        font-size: 0.8em;
+        padding: 8px;
       }
     }
   </style>
@@ -2270,7 +2325,7 @@
                   parameter. Оставьте пустым для случайного.</span></span></span>
             <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
               <input type="number" class="input-field" id="seedInput" placeholder="Пусто = случайный"
-                style="flex:1;max-width:220px" min="0" max="4294967295" oninput="handleInput()">
+                style="flex:1;max-width:220px" min="0" max="4294967295" autocomplete="off" oninput="handleInput()">
               <button class="btn btn-ghost" style="min-width:auto;padding:8px 12px;font-size:.82em"
                 id="randomSeedBtn">🎲
                 Random</button>
@@ -3079,6 +3134,26 @@
             state.seed = "";
             updateAll();
           });
+          // FIX: Seed Validation
+          $("seedInput").addEventListener("input", function () {
+            let val = parseInt(this.value, 10);
+            if (isNaN(val) || val < 0) val = 0;
+            if (val > 4294967295) val = 4294967295;
+            this.value = val;
+            buildPrompt(); // strictly update text, not full updateAll to avoid focus loss
+          });
+
+          // FIX: Generate 4 vs 3x3 Mutual Exclusion
+          $("generateFourMode").addEventListener("change", function () {
+            if (this.checked && $("grid3x3Mode").checked) {
+              $("grid3x3Mode").click(); // simulate click to trigger logic + visual update
+            }
+          });
+          $("grid3x3Mode").addEventListener("change", function () {
+            if (this.checked && $("generateFourMode").checked) {
+              $("generateFourMode").click();
+            }
+          });
         }
 
         function handleInput() { updateAll(); }
@@ -3127,8 +3202,11 @@
                 status.style.color = "var(--green)";
                 updateAll();
                 notify("Текст переведён на английский");
+              } else if (data.responseStatus === 429) {
+                // FIX: Handle 429 explicitly
+                throw new Error("Лимит MyMemory исчерпан (429).");
               } else {
-                throw new Error("API вернул ошибку");
+                throw new Error("API вернул ошибку code=" + data.responseStatus);
               }
             } catch (e) {
               status.textContent = "❌ Ошибка";
@@ -3197,6 +3275,14 @@
             }
             if (group === "aiModel") {
               updateModelHint();
+            }
+            // FIX: Quick Style visual reset
+            if (group === "quickStyle" && state[group]) {
+              // Clear competing styles visually and in state
+              state.photoStyle = ""; state.cinemaStyle = ""; state.directorStyle = "";
+              syncGroup("photoStyle"); syncGroup("cinemaStyle"); syncGroup("directorStyle");
+              // Also ensure expanded sections correct for Quick Style
+              if (window.expandSectionsForQuickStyle) window.expandSectionsForQuickStyle(true);
             }
           }
 
@@ -4024,6 +4110,12 @@
               $("referenceWeight").style.display = "none";
               updateAll();
             });
+          }
+
+          // FIX: Hide Active Tags section if empty
+          const tagSection = area.closest(".section");
+          if (tagSection) {
+            tagSection.style.display = area.children.length === 0 ? "none" : "block";
           }
         }
 
@@ -4891,31 +4983,40 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           else box.style.display = "none";
         }
 
-        function safeCopy(text, label) {
+        // FIX: safeCopy with visual feedback and fallback
+        function safeCopy(text, label, btn) {
+          const originalText = btn ? btn.innerHTML : "";
+          const success = () => {
+            notify(label + " скопирован");
+            if (btn) {
+              btn.innerHTML = "✅ Скопировано!";
+              setTimeout(() => btn.innerHTML = originalText, 2000);
+            }
+          };
+
           if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(function () {
-              notify(label + " скопирован");
-            }).catch(function () {
-              fallbackCopy(text, label);
+            navigator.clipboard.writeText(text).then(success).catch(function () {
+              fallbackCopy(text, label, btn, success);
             });
           } else {
-            fallbackCopy(text, label);
+            fallbackCopy(text, label, btn, success);
           }
         }
 
-        function fallbackCopy(text, label) {
+        // FIX: Robust fallback copy
+        function fallbackCopy(text, label, btn, onSuccess) {
           var ta = document.createElement("textarea");
           ta.value = text;
           ta.style.position = "fixed";
           ta.style.left = "-9999px";
-          ta.style.top = "-9999px";
-          ta.style.opacity = "0";
+          ta.style.top = "0"; // avoid scrolling to bottom
           document.body.appendChild(ta);
           ta.focus();
           ta.select();
           try {
             document.execCommand("copy");
-            notify(label + " скопирован");
+            if (onSuccess) onSuccess();
+            else notify(label + " скопирован");
           } catch (e) {
             notify("Ошибка копирования", "err");
           }
@@ -4927,7 +5028,7 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           if (!text.trim() || text.indexOf("Select parameters") >= 0 || text.indexOf("Выберите") >= 0) {
             notify("Сначала соберите промпт", "warn"); return;
           }
-          safeCopy(text, "Промпт");
+          safeCopy(text, "Промпт", this);
         }
 
         function copyJson() {
@@ -4935,7 +5036,7 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
             var jsonData = buildJson();
             var text = JSON.stringify(jsonData, null, 2);
             if (!text || text === "{}" || text === "null") { notify("JSON пуст", "warn"); return; }
-            safeCopy(text, "JSON");
+            safeCopy(text, "JSON", this);
           } catch (e) {
             notify("Ошибка JSON: " + e.message, "err");
           }
@@ -5007,6 +5108,15 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           $("referenceImages").value = "";
           $("refWeightSlider").value = 50;
           $("weightValue").textContent = "50";
+
+          // FIX: Reset all range sliders explicitly
+          document.querySelectorAll('input[type="range"]').forEach(slider => {
+            const def = slider.getAttribute('value') || slider.getAttribute('data-default') || slider.min || 0;
+            slider.value = def;
+            // Try to update sibling display if exists (usually id + "Val")
+            const disp = document.getElementById(slider.id.replace("Slider", "Val"));
+            if (disp) disp.textContent = def;
+          });
 
           $("imagePreviewContainer").style.display = "none";
           $("referenceOptions").style.display = "none";
@@ -5111,7 +5221,8 @@ Three-quarter body from the left. Subject turns, looking over shoulder. Wide ang
           }
 
           // Initial State
-          if (sec.id === 'quickStyleSection' || sec.id === 'presetsSection' || sec.id === 'generationModeSection' || sec.id === 'promptSection' || sec.id === 'jsonSection') {
+          // FIX: Removed jsonSection from default open list
+          if (sec.id === 'quickStyleSection' || sec.id === 'presetsSection' || sec.id === 'generationModeSection' || sec.id === 'promptSection') {
             sec.classList.remove('collapsed');
           } else {
             sec.classList.add('collapsed');
